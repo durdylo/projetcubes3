@@ -19,19 +19,21 @@ $msg['message'] = '';
 if (isset($data->email) && isset($data->password) && strlen($data->email) > 0 && strlen($data->password) > 0) {
     $emailUser = $data->email;
     $encodedpass = hash('sha256', $data->password);
-    $select_query = "SELECT * FROM `user` WHERE email='$emailUser' AND password='$encodedpass';";
+    $select_query = "SELECT * FROM `user` WHERE email='$emailUser' AND password='$encodedpass' AND is_delete='0';";
 
     $stmt = $conn->prepare($select_query);
     $stmt->execute();
-    $res =  $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($res == 0) {
+    $res =  $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if ($res == 0 || count($res) == 0) {
         $msg['state'] = 'error';
         $msg['message'] = 'Invalid credentials';
     }
     else {
         $msg['state'] = 'success';
         $msg['message'] = 'Login successful';
-        echo json_encode($res);
+        unset($res[0]["password"]);
+        unset($res[0]["is_delete"]);
+        echo json_encode($res[0]);
     }
     // PUSH POST DATA IN OUR $posts_array ARRAY
 }
