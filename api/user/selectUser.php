@@ -1,4 +1,5 @@
 <?php
+require_once('user.php');
 // SET HEADER
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
@@ -13,27 +14,19 @@ $conn = $db_connection->dbConnection();
 
 // GET DATA FORM REQUEST
 $data = json_decode(file_get_contents("php://input"));
+$new_user = new User($data);
 
 //CREATE MESSAGE ARRAY AND SET EMPTY
 $msg['message'] = '';
 if (isset($data->email) && isset($data->password) && strlen($data->email) > 0 && strlen($data->password) > 0) {
-    $emailUser = $data->email;
-    $encodedpass = hash('sha256', $data->password);
-    $select_query = "SELECT * FROM `user` WHERE email='$emailUser' AND password='$encodedpass' AND is_delete='0';";
-
-    $stmt = $conn->prepare($select_query);
-    $stmt->execute();
-    $res =  $stmt->fetchAll(PDO::FETCH_ASSOC);
-    if ($res == 0 || count($res) == 0) {
+    if (!$new_user->selectUser($conn)) {
         $msg['state'] = 'error';
         $msg['message'] = 'Invalid credentials';
     }
     else {
         $msg['state'] = 'success';
         $msg['message'] = 'Login successful';
-        unset($res[0]["password"]);
-        unset($res[0]["is_delete"]);
-        echo json_encode($res[0]);
+        echo json_encode(array("id" => $new_user->id, "name" => $new_user->name, "firstname" => $new_user->firstname, "email" => $new_user->email));
     }
     // PUSH POST DATA IN OUR $posts_array ARRAY
 }
