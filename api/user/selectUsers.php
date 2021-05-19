@@ -18,7 +18,8 @@ $data = json_decode(file_get_contents("php://input"));
 $msg['message'] = '';
 if (isset($data->email) && isset($data->password)) {
     $emailUser = $data->email;
-    $select_query = "SELECT * FROM `user` WHERE email='$emailUser'";
+    $encodedpass = hash('sha256', $data->password);
+    $select_query = "SELECT * FROM `user` WHERE email='$emailUser' AND password='$encodedpass';";
 
     $stmt = $conn->prepare($select_query);
     $stmt->execute();
