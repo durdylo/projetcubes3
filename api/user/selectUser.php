@@ -1,5 +1,5 @@
 <?php
-require_once('user.php');
+require_once('User.php');
 // SET HEADER
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
