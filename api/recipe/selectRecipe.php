@@ -1,4 +1,6 @@
 <?php
+require_once('Recipe.php');
+require_once('Ingredient.php');
 // SET HEADER
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
@@ -18,33 +20,23 @@ $data = json_decode(file_get_contents("php://input"), true);
 $msg['message'] = '';
 if (isset($_GET['userId'])) {
 
-    $userId = $_GET['userId'];
-    $select_query = "SELECT * FROM `recette` WHERE user_id='$userId'";
-
-    $stmt = $conn->prepare($select_query);
-    $stmt->execute();
-    $res =  $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $recipe = new Recipe();
+    $recipe->id_user = $_GET['userId'];
+    $res =  $recipe->selectUserRecipes($conn);
 
     echo json_encode($res);
 
     // PUSH POST DATA IN OUR $posts_array ARRAY
 } elseif (isset($_GET['recipeId'])) {
 
-    $recipeId = $_GET['recipeId'];
+    $recipe = new Recipe();
+    $recipe->id = $_GET['recipeId'];
+    // TODO verif si tout c'est bien passé
+    $recipe->selectRecipe($conn);
 
-    $select_ingredients = "SELECT * from ingredient INNER JOIN ingredient_recette on ingredient.id = ingredient_recette.id_ingredient where ingredient_recette.id_recette = $recipeId";
-
-    $select_recette = "SELECT * from recette where id = $recipeId";
-
-    $ingredients = $conn->prepare($select_ingredients);
-    $recette = $conn->prepare($select_recette);
-
-    $ingredients->execute();
-    $recette->execute();
-
-    $ingredientsRes =  $ingredients->fetchAll(PDO::FETCH_ASSOC);
-    $recetteRes =  $recette->fetch(PDO::FETCH_ASSOC);
+    $select_ingredients = "SELECT * from ingredient INNER JOIN ingredient_recette on ingredient.id = ingredient_recette.id_ingredient where ingredient_recette.id_recette = $recipe->id";
+    $ingredientsRes =  Ingredient::selectIngredientFromRecipe($conn, $recipe->id);
 
     echo json_encode($ingredientsRes);
-    echo json_encode($recetteRes);
+    echo json_encode(array("name" => $recipe->name, "description" => $recipe->description));
 }
