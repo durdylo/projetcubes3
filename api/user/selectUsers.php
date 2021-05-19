@@ -16,16 +16,28 @@ $data = json_decode(file_get_contents("php://input"));
 
 //CREATE MESSAGE ARRAY AND SET EMPTY
 $msg['message'] = '';
-if (isset($data->email) && isset($data->password)) {
+if (isset($data->email) && isset($data->password) && strlen($data->email) > 0 && strlen($data->password) > 0) {
     $emailUser = $data->email;
-    $select_query = "SELECT * FROM `user` WHERE email='$emailUser'";
+    $encodedpass = hash('sha256', $data->password);
+    $select_query = "SELECT * FROM `user` WHERE email='$emailUser' AND password='$encodedpass';";
 
     $stmt = $conn->prepare($select_query);
     $stmt->execute();
     $res =  $stmt->fetch(PDO::FETCH_ASSOC);
-
-    echo json_encode($res);
-
+    if ($res == 0) {
+        $msg['state'] = 'error';
+        $msg['message'] = 'Invalid credentials';
+    }
+    else {
+        $msg['state'] = 'success';
+        $msg['message'] = 'Login successful';
+        echo json_encode($res);
+    }
     // PUSH POST DATA IN OUR $posts_array ARRAY
 }
+else {
+    $msg['state'] = 'error';
+    $msg['message'] = "Email and password can't be empty";
+}
+echo json_encode($msg);
 // gestion error
