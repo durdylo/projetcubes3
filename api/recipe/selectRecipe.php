@@ -12,7 +12,7 @@ $db_connection = new Database();
 $conn = $db_connection->dbConnection();
 
 // GET DATA FORM REQUEST
-$data = json_decode(file_get_contents("php://input"));
+$data = json_decode(file_get_contents("php://input"), true);
 
 //CREATE MESSAGE ARRAY AND SET EMPTY
 $msg['message'] = '';
