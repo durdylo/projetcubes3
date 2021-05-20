@@ -10,6 +10,7 @@ class generalControler
     {
         $db_connection = new Database();
         $this->conn = $db_connection->dbConnection();
+        session_start();
 
         $this->controls();
         echo $this->html;
@@ -20,8 +21,9 @@ class generalControler
     {
         if (isset($_GET['p'])) {
             if ($_GET['p'] == 'cmp') {
-                if (isset($_SESSION['id'])) {
-                    $this->setMoncompte($_SESSION['id']);
+                if (isset($_SESSION['userId'])) {
+
+                    $this->setMoncompte($_SESSION['userId']);
                 } else {
                     $this->setMoncompte();
                 }
@@ -58,6 +60,18 @@ class generalControler
     private function setMoncompte($userId = false)
     {
         $view = new monCompteView;
+        if (isset($_POST['email'])) {
+            if (!isset($_POST['id_role'])) {
+                $_POST['id_role'] = 2;
+            }
+            $usertmp = new User($_POST);
+            $usertmp->selectUser($this->conn);
+            var_dump($usertmp);
+            if ($usertmp->id) {
+                $_SESSION['userId'] = $usertmp->id;
+                header('location: index.php');
+            }
+        }
         if (!$userId) {
 
             $this->html = $this->setHead() . $this->setHeader() . $view->setHTMLConnexion() . $this->setFooter();
