@@ -1,5 +1,7 @@
 <?php
 require_once('Recipe.php');
+require_once('../ingredient/Ingredient.php');
+require_once('../step/Step.php');
 // SET HEADER
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
@@ -19,21 +21,21 @@ $new_recipe = new Recipe($data);
 $msg['message'] = '';
 
 // CHECK IF RECEIVED DATA FROM THE REQUEST
-if (isset($data->name) && isset($data->description) && isset($data->id_user) && isset($data->ingredients)) {
+if (isset($data->name) && isset($data->description) && isset($data->id_user) && isset($data->id_category) && isset($data->ingredients) && isset($data->steps)) {
     // CHECK DATA VALUE IS EMPTY OR NOT
-    if (!empty($data->name) && !empty($data->description) && !empty($data->id_user) && !empty($data->ingredients)) {
+    if (!empty($data->name) && !empty($data->description) && !empty($data->id_user) && isset($data->id_category) && !empty($data->ingredients) && !empty($data->steps)) {
 
         if ($new_recipe->insertRecipe($conn)) {
 
             $idRecipe = $conn->lastInsertId();
 
             foreach ($data->ingredients as $ingredient) {
-                $insert_query = "INSERT INTO `ingredient_recette`(id_recette, id_ingredient, quantity )VALUES(:id_recette, :id_ingredient, :quantity)";
-                $insert_ingredient = $conn->prepare($insert_query);
-                $insert_ingredient->bindValue(':id_recette', htmlspecialchars(strip_tags($idRecipe)),  PDO::PARAM_INT);
-                $insert_ingredient->bindValue(':id_ingredient', htmlspecialchars(strip_tags($ingredient->id)), PDO::PARAM_INT);
-                $insert_ingredient->bindValue(':quantity', htmlspecialchars(strip_tags($ingredient->quantity)), PDO::PARAM_INT);
-                $insert_ingredient->execute();
+                //TODO check if succeeded
+                Ingredient::insertIngredientsInRecipe($conn, $idRecipe, $ingredient->id, $ingredient->quantity, $ingredient->id_unit);
+            }
+            foreach ($data->steps as $step) {
+                //TODO check if succeeded
+                Step::insertStepsInRecipe($conn, $idRecipe, $step->step_order, $step->text);
             }
         } else {
             $msg['message'] = 'Data not Inserted';

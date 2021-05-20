@@ -20,7 +20,7 @@ $new_user = new User($data);
 $msg['message'] = '';
 
 // CHECK IF RECEIVED DATA FROM THE REQUEST
-if (isset($data->name) && isset($data->email) && isset($data->password) && isset($data->firstname) && isset($data->confirmpassword) && isset($data->role)) {
+if (isset($data->name) && isset($data->email) && isset($data->password) && isset($data->firstname) && isset($data->confirmpassword) && isset($data->id_role)) {
     if ($data->password != $data->confirmpassword) {
         $msg['message'] = 'les mots de passe ne correspondent pas';
     } else if (!is_password_ok($data->password)) {
@@ -31,7 +31,7 @@ if (isset($data->name) && isset($data->email) && isset($data->password) && isset
         $msg['message'] = 'Account already exists';
     } else {
         // CHECK DATA VALUE IS EMPTY OR NOT
-        if (!empty($data->name) && !empty($data->email) && !empty($data->password) && !empty($data->firstname) && !empty($data->role)) {
+        if (!empty($data->name) && !empty($data->email) && !empty($data->password) && !empty($data->firstname) && !empty($data->id_role)) {
 
             if ($new_user->insertUser($conn)) {
                 $msg['state'] = 'success';

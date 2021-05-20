@@ -5,28 +5,30 @@ class Recipe {
 	public $name;
 	public $description;
 	public $id_user;
-	public $is_delete;
+	public $id_category;
+	public $name_category;
 
 	public function __construct($data) {
 		$this->set($data);
 	}
 
 	public function	set($data) {
-		if ($data == 0)
+		if ($data == null)
 			return (0);
 		foreach ($data AS $key => $value)
 			$this->{$key} = $value;
 	}
 
 	public function	selectUserRecipes($conn) {
-		$select_query = "SELECT * FROM `recette` WHERE id_user='$this->id_user' AND is_delete='0'";
+		$select_query = "SELECT recipe.*, category.name as 'name_category' FROM `recipe` LEFT JOIN category ON recipe.id_category = category.id WHERE id_user='$this->id_user'";
 		$stmt = $conn->prepare($select_query);
 		$stmt->execute();
+		
 		return  $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	public function	selectRecipe($conn) {
-		$select_recette = "SELECT * from recette where id = $this->id";
+		$select_recette = "SELECT recipe.*, category.name as 'name_category' FROM `recipe` LEFT JOIN category ON recipe.id_category = category.id where recipe.id = $this->id";
 		$stmt = $conn->prepare($select_recette);
 		$stmt->execute();
 		$res =  $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -40,12 +42,13 @@ class Recipe {
 	}
 
 	public function	insertRecipe($conn) {
-		$insert_query = "INSERT INTO `recette`(name, description, id_user )VALUES(:name,:description,:id_user)";
+		$insert_query = "INSERT INTO `recipe`(name, description, id_user, id_category)VALUES(:name,:description,:id_user,:id_category)";
         $insert_stmt = $conn->prepare($insert_query);
         // DATA BINDING
         $insert_stmt->bindValue(':name', htmlspecialchars(strip_tags($this->name)), PDO::PARAM_STR);
         $insert_stmt->bindValue(':description', htmlspecialchars(strip_tags($this->description)), PDO::PARAM_STR);
         $insert_stmt->bindValue(':id_user', htmlspecialchars(strip_tags($this->id_user)), PDO::PARAM_INT);
+        $insert_stmt->bindValue(':id_category', htmlspecialchars(strip_tags($this->id_category)), PDO::PARAM_INT);
 		return $insert_stmt->execute();
 	}
 }
