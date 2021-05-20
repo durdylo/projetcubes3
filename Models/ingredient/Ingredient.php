@@ -41,21 +41,39 @@ class Ingredient {
 		return  $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	//TODO GERER LES EXCEPTIONS POUR TOUT LES $stmt->execute();
 	public function			insertIngredient($conn) {
 		$insert_query = "INSERT INTO `ingredient`(name) VALUES(:name)";
-
 		$insert_stmt = $conn->prepare($insert_query);
 		$insert_stmt->bindValue(':name', htmlspecialchars(strip_tags($this->name)), PDO::PARAM_STR);
-		return $insert_stmt->execute();
+		try {
+			return $insert_stmt->execute();
+		}
+		catch (Exception $e) {
+			return (false);
+		}
 	}
 
 	public function			updateIngredient($conn) {
-		$insert_query = "UPDATE ingredient SET name= :name WHERE id= :id";
+		$update_query = "UPDATE ingredient SET name= :name WHERE id= :id";
 
-		$insert_stmt = $conn->prepare($insert_query);
-		$insert_stmt->bindValue(':name', htmlspecialchars(strip_tags($this->name)), PDO::PARAM_STR);
-		$insert_stmt->bindValue(':id', htmlspecialchars(strip_tags($this->id)), PDO::PARAM_INT);
-		return $insert_stmt->execute();
+		$stmt = $conn->prepare($update_query);
+		$stmt->bindValue(':name', htmlspecialchars(strip_tags($this->name)), PDO::PARAM_STR);
+		$stmt->bindValue(':id', htmlspecialchars(strip_tags($this->id)), PDO::PARAM_INT);
+		return $stmt->execute();
+	}
+
+	public function			deleteIngredient($conn) {
+	
+		$delete_query = "DELETE FROM ingredient WHERE id= :id";
+		$stmt = $conn->prepare($delete_query);
+		$stmt->bindValue(':id', htmlspecialchars(strip_tags($this->id)), PDO::PARAM_INT);
+		try {
+			return $stmt->execute();
+		}
+		catch (Exception $e) {
+			return (false);
+		}
 	}
 }
 

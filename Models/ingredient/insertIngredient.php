@@ -20,12 +20,12 @@ $ingredient = new Ingredient($data);
 $msg['message'] = '';
 
 // CHECK IF RECEIVED DATA FROM THE REQUEST
-if (!empty($ingredient->id) && !empty($ingredient->name)) {
-	if ($ingredient->updateIngredient($conn)) {
+if (!empty($ingredient->name)) {
+	if ($ingredient->insertIngredient($conn)) {
 		$msg['state'] = 'success';
-		$msg['message'] = 'Data Updated Successfully';
+		$msg['message'] = 'Data Inserted Successfully';
 	} else {
-		$msg['message'] = 'Data not Updated';
+		$msg['message'] = 'Data not Inserted';
 		$msg['state'] = 'error';
 	}
 } else {
