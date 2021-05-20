@@ -15,6 +15,7 @@ class generalView
         <title>Accueil JL Cuisine</title>
         <link rel='stylesheet' type='text/css' href='assets/css/accueil.css'>
         <link rel='stylesheet' type='text/css' href='assets/css/compte.css'>
+        <link rel='stylesheet' type='text/css' href='assets/css/inscription.css'>
             </head>";
     }
 
