@@ -25,11 +25,11 @@ class User
 	public function selectUser($conn)
 	{
 		$encodedpass = hash('sha256', $this->password);
-		$select_query = "SELECT * FROM `user` WHERE email='$this->email' AND password='$encodedpass' AND is_deleted='0';";
+		$select_query = "SELECT * FROM `user` WHERE email='$this->email' AND is_deleted='0';";
 		$stmt = $conn->prepare($select_query);
 		$stmt->execute();
 		$res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		if ($res == 0 || count($res) == 0) {
+		if ($res == 0 || count($res) == 0 || !password_verify($this->password, $res[0]["password"])) {
 			return (false);
 		} else {
 			$this->set($res[0]);
@@ -39,7 +39,8 @@ class User
 
 	public function	insertUser($conn)
 	{
-		$encodedpass = hash('sha256', $this->password);
+		if (!($encodedpass = password_hash($this->password, PASSWORD_DEFAULT)))
+			return (false);
 		$insert_query = "INSERT INTO `user`(name,email,password, firstname,id_role) VALUES(:name,:email,:password,:firstname,:id_role)";
 
 		$insert_stmt = $conn->prepare($insert_query);
@@ -49,6 +50,15 @@ class User
 		$insert_stmt->bindValue(':email', htmlspecialchars(strip_tags($this->email)), PDO::PARAM_STR);
 		$insert_stmt->bindValue(':password', htmlspecialchars(strip_tags($encodedpass)), PDO::PARAM_STR);
 		$insert_stmt->bindValue(':id_role', htmlspecialchars(strip_tags($this->id_role)), PDO::PARAM_INT);
-		return $insert_stmt->execute();
+		try {
+			return $insert_stmt->execute();
+		}
+		catch (Exception $e) {
+			return (false);
+		}
+	}
+
+	public function	updateUser($conn) {
+		
 	}
 }
