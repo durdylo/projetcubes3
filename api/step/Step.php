@@ -27,8 +27,8 @@ class Step {
 		$insert_query = "INSERT INTO `step`(id_recipe, step_order, text) VALUES(:id_recipe,:step_order,:text)";
 
 		$insert_stmt = $conn->prepare($insert_query);
-		$insert_stmt->bindValue(':id_recipe', htmlspecialchars(strip_tags($id_recipe)), PDO::PARAM_STR);
-		$insert_stmt->bindValue(':step_order', htmlspecialchars(strip_tags($step_order)), PDO::PARAM_STR);
+		$insert_stmt->bindValue(':id_recipe', htmlspecialchars(strip_tags($id_recipe)), PDO::PARAM_INT);
+		$insert_stmt->bindValue(':step_order', htmlspecialchars(strip_tags($step_order)), PDO::PARAM_INT);
 		$insert_stmt->bindValue(':text', htmlspecialchars(strip_tags($text)), PDO::PARAM_STR);
 		return $insert_stmt->execute();
 	}

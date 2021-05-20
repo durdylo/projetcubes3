@@ -1,5 +1,5 @@
 <?php
-require_once('User.php');
+require_once('Ingredient.php');
 // SET HEADER
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
@@ -14,25 +14,24 @@ $conn = $db_connection->dbConnection();
 
 // GET DATA FORM REQUEST
 $data = json_decode(file_get_contents("php://input"));
-$new_user = new User($data);
+$ingredient = new Ingredient($data);
 
 //CREATE MESSAGE ARRAY AND SET EMPTY
 $msg['message'] = '';
-if (strlen($data->email) > 0 && strlen($data->password) > 0) {
-    if (!$new_user->selectUser($conn)) {
-        $msg['state'] = 'error';
-        $msg['message'] = 'Invalid credentials';
-    }
-    else {
-        $msg['state'] = 'success';
-        $msg['message'] = 'Login successful';
-        echo json_encode(array("id" => $new_user->id, "name" => $new_user->name, "firstname" => $new_user->firstname, "email" => $new_user->email));
-    }
-    // PUSH POST DATA IN OUR $posts_array ARRAY
-}
-else {
+
+// CHECK IF RECEIVED DATA FROM THE REQUEST
+if (!empty($ingredient->id) && !empty($ingredient->name)) {
+	if ($ingredient->updateIngredient($conn)) {
+		$msg['state'] = 'success';
+		$msg['message'] = 'Data Updated Successfully';
+	} else {
+		$msg['message'] = 'Data not Updated';
+		$msg['state'] = 'error';
+	}
+} else {
     $msg['state'] = 'error';
-    $msg['message'] = "Email and password can't be empty";
+    $msg['message'] = 'Please fill all the fields';
 }
+//ECHO DATA IN JSON FORMAT
 echo json_encode($msg);
-// gestion error
+?>

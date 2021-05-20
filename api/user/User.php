@@ -44,7 +44,7 @@ class User {
 		$insert_stmt->bindValue(':firstname', htmlspecialchars(strip_tags($this->firstname)), PDO::PARAM_STR);
 		$insert_stmt->bindValue(':email', htmlspecialchars(strip_tags($this->email)), PDO::PARAM_STR);
 		$insert_stmt->bindValue(':password', htmlspecialchars(strip_tags($encodedpass)), PDO::PARAM_STR);
-		$insert_stmt->bindValue(':id_role', htmlspecialchars(strip_tags($this->id_role)), PDO::PARAM_STR);
+		$insert_stmt->bindValue(':id_role', htmlspecialchars(strip_tags($this->id_role)), PDO::PARAM_INT);
 		return $insert_stmt->execute();
 	}
 }
