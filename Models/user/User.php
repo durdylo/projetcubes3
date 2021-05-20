@@ -1,5 +1,6 @@
 <?php
-class User {
+class User
+{
 	public	$id;
 	public	$name;
 	public	$firstname;
@@ -8,18 +9,21 @@ class User {
 	public	$id_role;
 	public	$is_deleted;
 
-	public function __construct($data) {
+	public function __construct($data)
+	{
 		$this->set($data);
 	}
 
-	public function	set($data) {
+	public function	set($data)
+	{
 		if ($data == null)
 			return (0);
-		foreach ($data AS $key => $value)
+		foreach ($data as $key => $value)
 			$this->{$key} = $value;
 	}
 
-	public function selectUser($conn) {
+	public function selectUser($conn)
+	{
 		$encodedpass = hash('sha256', $this->password);
 		$select_query = "SELECT * FROM `user` WHERE email='$this->email' AND password='$encodedpass' AND is_deleted='0';";
 		$stmt = $conn->prepare($select_query);
@@ -27,14 +31,14 @@ class User {
 		$res = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		if ($res == 0 || count($res) == 0) {
 			return (false);
-		}
-		else {
+		} else {
 			$this->set($res[0]);
 		}
 		return (true);
 	}
-	
-	public function	insertUser($conn) {
+
+	public function	insertUser($conn)
+	{
 		$encodedpass = hash('sha256', $this->password);
 		$insert_query = "INSERT INTO `user`(name,email,password, firstname,id_role) VALUES(:name,:email,:password,:firstname,:id_role)";
 
@@ -48,4 +52,3 @@ class User {
 		return $insert_stmt->execute();
 	}
 }
-?>
