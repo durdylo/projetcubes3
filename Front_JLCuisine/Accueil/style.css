@@ -7,7 +7,7 @@
   }
   
 
-  .e2_0 { 
+  .topbar { 
     background-color:rgba(187.00000405311584, 96.61667078733444, 96.61667078733444, 1);
     width:100%;
     height:90px;
@@ -15,7 +15,7 @@
     flex-direction: row;
   }
   
-  .e2_1 { 
+  .header { 
     color:rgba(255, 255, 255, 1);
     height:84px;
     font-family:Baloo 2;
@@ -74,7 +74,7 @@
     color:rgba(0, 0, 0, 1);
     width:836px;
     height:120px;
-    font-family:Alex Brush;
+    font-family:'Alex Brush';
     text-align:center;
     font-size:72px;
     letter-spacing:0;
@@ -95,7 +95,7 @@
 
   .e7_5 { 
     color:rgba(0, 0, 0, 1);
-    font-family:Alex Brush;
+    font-family:'Alex Brush';
     text-align: center;
     font-size:72px;
     letter-spacing:0;
@@ -104,7 +104,6 @@
   .avocat { 
     width:397px;
     height:268px;
-    background-image: url("i60852-top-15-des-recettes-healthy-du-moment.png");
     background-repeat:no-repeat;
     background-size:cover;
     margin: 30px;
@@ -113,7 +112,6 @@
   .gratin { 
     width:397px;
     height:268px;
-    background-image: url("i144023-gratin-de-pates-et-chou-fleur.png");
     background-repeat:no-repeat;
     background-size:cover;
     margin: 30px;
@@ -122,7 +120,6 @@
   .poelee { 
     width:397px;
     height:268px;
-    background-image: url("recettes-lasagne-au-boeuf-et-aux-champignons-bs009996-1160x650-pub-71375.png");
     background-repeat:no-repeat;
     background-size:cover;
     margin: 30px;
@@ -131,7 +128,6 @@
   .corsica { 
     width:397px;
     height:268px;
-    background-image: url("93607de4-f877-4c0f-9683-5bc0c65dee55-recettes-plats-au-four-tout-en-un-one-sheet-pan-768x512.png");
     background-repeat:no-repeat;
     background-size:cover;
     margin: 30px;
@@ -140,7 +136,6 @@
   .lasagnes { 
     width:397px;
     height:268px;
-    background-image: url("i131341-lasagnes-bolognaise.png");
     background-repeat:no-repeat;
     background-size:cover;
     margin: 30px;
@@ -149,7 +144,6 @@
   .tagliatelles { 
     width:397px;
     height:268px;
-    background-image: url("Tagliatelles-au-bacon-Recette-TagliatelleChampignon-750x410.png");
     background-repeat:no-repeat;
     background-size:cover;
     margin: 30px;
@@ -221,4 +215,19 @@
 
   .logo2 {
     text-align: center;
+  }
+
+  figcaption {
+    color: #bc6161;
+    font-family: Baloo 2;
+    font-weight: SemiBold;
+    text-align: center;
+    font-size: 40px;
+    opacity: 1; 
+    
+  }
+
+  a {
+    text-decoration: none;
+    color: black;
   }

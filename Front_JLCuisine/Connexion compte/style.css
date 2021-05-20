@@ -1,95 +1,178 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-size: 14px;
+}
 
 /* Block Abonnement */
 
-.abonnement-block{
+.abonnement-block {
     background-color: #BB6161;
-    width: 100%;
-    height: 5%;
-    margin: 0px;
-    display:flex;
-    flex: inline-block;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    display: flex;
+    flex-direction: row;
     justify-content: space-between;
+
 }
-.abonnement-button{
+
+.offre {
+    color: white;
+    height: 84px;
+    font-family: 'Baloo 2', cursive;
+    text-align: center;
+    font-size: 36px;
+}
+
+.abonnement-button {
     font-weight: bold;
 }
 
 /* Block Title */
-.title-block{
+.title-block {
     background-color: #E3AF89;
     display: flex;
     flex-direction: row;
+    justify-content: space-evenly;
+    align-items: baseline;
 }
 
-.main-title{
+.main-title {
     font-weight: bold;
     color: white;
+    font-family: 'Baloo 2', cursive;
+    font-size: 144px;
+    letter-spacing: 0;
+    margin-left: 10px;
 }
-/* .img{
 
-} */
-.slogan{
-    font-family: 'Alex Brush';
+.slogan {
+    font-family: 'Alex Brush', cursive;
     color: black;
+    width: 836px;
+    height: 120px;
+    text-align: center;
+    font-size: 72px;
+    letter-spacing: 0;
+    position: relative;
+    left: 100px;
 }
 
 /* Block Nav */
-.nav-list{
+.nav-list {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     flex-grow: 1;
     list-style-type: none;
+    margin: 0px;
+    position: relative;
+    left: -40px;
+}
+
+.menu-list-item {
+    background-color: white;
+    font-weight: bold;
+    color: #BB6161;
+    width: 320px;
+    height: 80px;
+    border: 2px solid #BB6161;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.list-link {
+    font-weight: bold;
+    color: #BB6161;
 }
 
 /* Block Body */
-.body-block{
+.body-block {
     background-color: white;
 }
-.connexion-title{
+
+.connexion-title {
     color: #BB6161;
     font-weight: bold;
     text-align: center;
 }
-.connexion-body{
+
+.connexion-body {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     text-align: center;
+    justify-content: center;
 }
-.connexion-button-input{
-    background-color: #EEE5E5;
 
+.connexion-button-input {
+    position: relative;
+    left: 25%;
+    background-color: #EEE5E5;
+    width: 50%;
+    height: 50px;
+    margin: 20px;
 }
-::placeholder { 
+
+::placeholder {
     color: #BB6161;
     opacity: 1;
     font-weight: bold;
 }
-.connexion-button{
+
+.connexion-button {
     background-color: #EEE5E5;
     font-weight: bold;
     color: #BB6161;
+    position: relative;
+    left: 25%;
+    width: 50%;
+    height: 50px;
+    margin: 20px;
+
 }
-.creation-link{
+
+.creation-link {
     font-weight: bold;
     color: black;
 }
 
 /* Block Footer */
-.footer-block{
+.footer-block {
     background-color: #E3AF89;
-
+    width: 100%;
+    height: 400px;
 }
-.footer-title{
+
+.footer-title {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    font-family: 'Baloo 2', cursive;
+    font-weight: bold;
+    color: white;
+    font-size: 50px;
+    align-items: baseline;
 }
-.footer-list{
+
+.footer-list {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     flex-grow: 1;
     list-style-type: none;
+    color: #333;
+    font-family: Baloo 2;
+    font-weight: SemiBold;
+    opacity: 1;
+    text-align: center;
+}
+
+.footer-list-item {
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
 }
