@@ -12,7 +12,7 @@ class monCompteView
         <div class='connexion-body'>
         <form method='post'>
             <input class='connexion-button-input' name='email' type='text' placeholder='Adresse Mail'>
-            <input class='connexion-button-input' type='password' name='mdp' placeholder='Mot de Passe'>
+            <input class='connexion-button-input' type='password' name='password' placeholder='Mot de Passe'>
             <button class='connexion-button'>Se connecter</button>
             <a class='creation-link' href='index.php?p=inscr'>Première visite ? Créez un compte !</a>
             </form>

@@ -5,8 +5,8 @@ class Database
 
     private $db_host = 'localhost';
     private $db_name = 'jlcuisine';
-    private $db_username = 'root';
-    private $db_password = '';
+    private $db_username = 'lolo';
+    private $db_password = 'Loic10101998Denis.';
 
 
     public function dbConnection()
