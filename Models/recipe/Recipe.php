@@ -51,6 +51,21 @@ class Recipe {
         $insert_stmt->bindValue(':id_category', htmlspecialchars(strip_tags($this->id_category)), PDO::PARAM_INT);
 		return $insert_stmt->execute();
 	}
+
+	public function	updateRecipe($conn) {
+		$update_query = "UPDATE recipe SET name = :name, description = :description, id_category = :id_category WHERE id = :id;";
+		$stmt = $conn->prepare($update_query);
+		$stmt->bindValue(':name', htmlspecialchars(strip_tags($this->name)), PDO::PARAM_STR);
+		$stmt->bindValue(':description', htmlspecialchars(strip_tags($this->description)), PDO::PARAM_STR);
+		$stmt->bindValue(':id_category', htmlspecialchars(strip_tags($this->id_category)), PDO::PARAM_INT);
+		$stmt->bindValue(':id', htmlspecialchars(strip_tags($this->id)), PDO::PARAM_INT);
+		try {
+			return $stmt->execute();
+		}
+		catch (Exception $e) {
+			return (false);
+		}
+	}
 }
 
 ?>
