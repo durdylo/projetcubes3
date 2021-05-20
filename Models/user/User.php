@@ -35,13 +35,27 @@ class User
 			$this->set($res[0]);
 		}
 		return (true);
+	}	
+	
+	public function selectUserById($conn)
+	{
+		$select_query = "SELECT * FROM `user` WHERE id='$this->id' AND is_deleted='0';";
+		$stmt = $conn->prepare($select_query);
+		$stmt->execute();
+		$res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		if ($res == 0 || count($res) == 0 || !password_verify($this->password, $res[0]["password"])) {
+			return (false);
+		} else {
+			$this->set($res[0]);
+		}
+		return (true);
 	}
 
 	public function	insertUser($conn)
 	{
 		if (!($encodedpass = password_hash($this->password, PASSWORD_DEFAULT)))
 			return (false);
-		$insert_query = "INSERT INTO `user`(name,email,password, firstname,id_role) VALUES(:name,:email,:password,:firstname,:id_role)";
+		$insert_query = "INSERT INTO `user`(name,email,password, firstname) VALUES(:name,:email,:password,:firstname)";
 
 		$insert_stmt = $conn->prepare($insert_query);
 		// DATA BINDING
@@ -49,7 +63,6 @@ class User
 		$insert_stmt->bindValue(':firstname', htmlspecialchars(strip_tags($this->firstname)), PDO::PARAM_STR);
 		$insert_stmt->bindValue(':email', htmlspecialchars(strip_tags($this->email)), PDO::PARAM_STR);
 		$insert_stmt->bindValue(':password', htmlspecialchars(strip_tags($encodedpass)), PDO::PARAM_STR);
-		$insert_stmt->bindValue(':id_role', htmlspecialchars(strip_tags($this->id_role)), PDO::PARAM_INT);
 		try {
 			return $insert_stmt->execute();
 		}
@@ -59,6 +72,20 @@ class User
 	}
 
 	public function	updateUser($conn) {
-		
+		if (!($encodedpass = password_hash($this->password, PASSWORD_DEFAULT)))
+			return (false);
+		$update_query = "UPDATE user SET name = :name, firstname = :firstname, email = :email, password = :password WHERE id = :id;";
+		$stmt = $conn->prepare($update_query);
+		$stmt->bindValue(':name', htmlspecialchars(strip_tags($this->name)), PDO::PARAM_STR);
+		$stmt->bindValue(':firstname', htmlspecialchars(strip_tags($this->firstname)), PDO::PARAM_STR);
+		$stmt->bindValue(':email', htmlspecialchars(strip_tags($this->email)), PDO::PARAM_STR);
+		$stmt->bindValue(':password', htmlspecialchars(strip_tags($encodedpass)), PDO::PARAM_STR);
+		$stmt->bindValue(':id', htmlspecialchars(strip_tags($this->id)), PDO::PARAM_INT);
+		try {
+			return $stmt->execute();
+		}
+		catch (Exception $e) {
+			return (false);
+		}
 	}
 }

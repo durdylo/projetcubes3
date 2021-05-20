@@ -21,7 +21,7 @@ $msg['message'] = '';
 
 // CHECK IF RECEIVED DATA FROM THE REQUEST
 // CHECK DATA VALUE IS EMPTY OR NOT
-if (!empty($data->name) && !empty($data->email) && !empty($data->password) && !empty($data->firstname) && !empty($data->id_role)) {
+if (!empty($data->name) && !empty($data->email) && !empty($data->password) && !empty($data->firstname)) {
     if ($data->password != $data->confirmpassword) {
         $msg['message'] = 'les mots de passe ne correspondent pas';
     } else if (!is_password_ok($data->password)) {
