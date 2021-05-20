@@ -66,6 +66,20 @@ class Recipe {
 			return (false);
 		}
 	}
+
+	public function	deleteRecipe($conn) {
+		if (!(Step::deleteStepsFromRecipe($conn, $this->id)) || !(Ingredient::deleteIngredientsFromRecipe($conn, $this->id)))
+			return (false);
+		$delete_query = "DELETE FROM recipe WHERE id= :id";
+		$stmt = $conn->prepare($delete_query);
+		$stmt->bindValue(':id', htmlspecialchars(strip_tags($this->id)), PDO::PARAM_INT);
+		try {
+			return $stmt->execute();
+		}
+		catch (Exception $e) {
+			return (false);
+		}
+	}
 }
 
 ?>

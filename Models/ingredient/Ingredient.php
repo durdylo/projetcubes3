@@ -17,9 +17,9 @@ class Ingredient {
 	}
 	
 	public static function	deleteIngredientsFromRecipe($conn, $id_recipe) {
-		$delete_ingredients = "DELETE FROM ingredient WHERE ingredient_recipe.id_recipe = :id_recipe";
-		$stmt = $conn->prepare($delete_query);
-		$stmt->bindValue(':id', htmlspecialchars(strip_tags($id_recipe)), PDO::PARAM_INT);
+		$delete_ingredients = "DELETE FROM ingredient_recipe WHERE id_recipe = :id_recipe";
+		$stmt = $conn->prepare($delete_ingredients);
+		$stmt->bindValue(':id_recipe', htmlspecialchars(strip_tags($id_recipe)), PDO::PARAM_INT);
 		try {
 			return $stmt->execute();
 		}

@@ -17,9 +17,9 @@ class Step {
 	}
 
 	public static function	deleteStepsFromRecipe($conn, $id_recipe) {
-		$delete_steps = "DELETE FROM step WHERE step.id_recipe = :id_recipe";
+		$delete_steps = "DELETE FROM step WHERE id_recipe = :id_recipe";
 		$stmt = $conn->prepare($delete_steps);
-		$stmt->bindValue(':id', htmlspecialchars(strip_tags($id_recipe)), PDO::PARAM_INT);
+		$stmt->bindValue(':id_recipe', htmlspecialchars(strip_tags($id_recipe)), PDO::PARAM_INT);
 		try {
 			return $stmt->execute();
 		}
