@@ -1,4 +1,5 @@
 <?php
+require_once('Recipe.php');
 // SET HEADER
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
@@ -12,37 +13,26 @@ $db_connection = new Database();
 $conn = $db_connection->dbConnection();
 
 // GET DATA FORM REQUEST
-$data = json_decode(file_get_contents("php://input"), true);
-
-var_dump($data);
+$data = json_decode(file_get_contents("php://input"));
+$new_recipe = new Recipe($data);
 //CREATE MESSAGE ARRAY AND SET EMPTY
 $msg['message'] = '';
 
 // CHECK IF RECEIVED DATA FROM THE REQUEST
-if (isset($data['name']) && isset($data['description']) && isset($data['idUser']) && isset($data['ingredients'])) {
-
+if (isset($data->name) && isset($data->description) && isset($data->id_user) && isset($data->ingredients)) {
     // CHECK DATA VALUE IS EMPTY OR NOT
-    if (!empty($data['name']) && !empty($data['description']) && !empty($data['idUser']) && !empty($data['ingredients'])) {
+    if (!empty($data->name) && !empty($data->description) && !empty($data->id_user) && !empty($data->ingredients)) {
 
-        $insert_query = "INSERT INTO `recette`(name, description, user_id )VALUES(:name,:description,:user_id)";
-
-        $insert_stmt = $conn->prepare($insert_query);
-        // DATA BINDING
-        $insert_stmt->bindValue(':name', htmlspecialchars(strip_tags($data['name'])), PDO::PARAM_STR);
-        $insert_stmt->bindValue(':description', htmlspecialchars(strip_tags($data['description'])), PDO::PARAM_STR);
-        $insert_stmt->bindValue(':user_id', htmlspecialchars(strip_tags($data['idUser'])), PDO::PARAM_INT);
-
-
-        if ($insert_stmt->execute()) {
+        if ($new_recipe->insertRecipe($conn)) {
 
             $idRecipe = $conn->lastInsertId();
 
-            foreach ($data['ingredients'] as $ingredient) {
+            foreach ($data->ingredients as $ingredient) {
                 $insert_query = "INSERT INTO `ingredient_recette`(id_recette, id_ingredient, quantity )VALUES(:id_recette, :id_ingredient, :quantity)";
                 $insert_ingredient = $conn->prepare($insert_query);
                 $insert_ingredient->bindValue(':id_recette', htmlspecialchars(strip_tags($idRecipe)),  PDO::PARAM_INT);
-                $insert_ingredient->bindValue(':id_ingredient', htmlspecialchars(strip_tags($ingredient['id'])), PDO::PARAM_INT);
-                $insert_ingredient->bindValue(':quantity', htmlspecialchars(strip_tags($ingredient['quantity'])), PDO::PARAM_INT);
+                $insert_ingredient->bindValue(':id_ingredient', htmlspecialchars(strip_tags($ingredient->id)), PDO::PARAM_INT);
+                $insert_ingredient->bindValue(':quantity', htmlspecialchars(strip_tags($ingredient->quantity)), PDO::PARAM_INT);
                 $insert_ingredient->execute();
             }
         } else {
