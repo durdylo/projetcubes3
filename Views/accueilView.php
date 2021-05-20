@@ -9,21 +9,6 @@ class accueilView
     public function setHTMLAccueil()
     {
         return "<body>
-
-
-        <div class='e2_0'>
-            <span  class='e2_1'>OFFRE ABONNEMENT : ACCÉDEZ À DES MILLIERS DE RECETTES SANS LIMITE !</span>
-            <div class='e8_16'>
-                <p class='e8_17'>Se connecter</p>
-            </div>
-        </div>
-    
-        <div class='v1'>
-            <span  class='e4_2'>JLCuisine</span>
-            <img class='logo1' src='Rectangle2.png' alt='Logo' width='200' height='200'>
-            <span  class='e4_5'>Inspirez-vous des plus créatifs !</span>
-        </div>
-    
         <div class='row-menu'>
             <div class='e4_8'><p class='types-plats'>Entrées</p></div>
             <div class='e4_8'><p class='types-plats'>Salades</p></div>

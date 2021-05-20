@@ -10,7 +10,7 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 // INCLUDING DATABASE AND MAKING OBJECT
-require '../database.php';
+require '../../database.php';
 $db_connection = new Database();
 $conn = $db_connection->dbConnection();
 // GET DATA FORM REQUEST
@@ -34,6 +34,8 @@ if (isset($_GET['id_user'])) {
     $ingredientsRes =  Ingredient::selectIngredientsFromRecipe($conn, $recipe->id);
     $stepsRes = Step::selectStepsFromRecipe($conn, $recipe->id);
 
-    echo json_encode(array("name" => $recipe->name, "description" => $recipe->description, "category" => $recipe->name_category,
-    "ingredients" => $ingredientsRes, "steps" => $stepsRes));
+    echo json_encode(array(
+        "name" => $recipe->name, "description" => $recipe->description, "category" => $recipe->name_category,
+        "ingredients" => $ingredientsRes, "steps" => $stepsRes
+    ));
 }

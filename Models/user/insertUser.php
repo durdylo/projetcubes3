@@ -8,7 +8,7 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 // INCLUDING DATABASE AND MAKING OBJECT
-require '../database.php';
+require '../../database.php';
 $db_connection = new Database();
 $conn = $db_connection->dbConnection();
 
@@ -63,4 +63,3 @@ echo json_encode($msg);
         $res =  $stmt->fetch(PDO::FETCH_ASSOC);
         return ($res > 0);
     }
-?>
