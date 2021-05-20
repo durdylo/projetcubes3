@@ -88,4 +88,17 @@ class User
 			return (false);
 		}
 	}
+
+	public function deleteUser($conn)
+	{
+		$delete_query = "UPDATE user SET is_deleted = 1 WHERE id='$this->id';";
+		$stmt = $conn->prepare($delete_query);
+		$stmt->execute();
+		try {
+			return $stmt->execute();
+		}
+		catch (Exception $e) {
+			return (false);
+		}
+	}
 }
