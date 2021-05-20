@@ -5,9 +5,220 @@
   body {
     font-size: 14px;
   }
+  
 
-  .v1 {
-    background: rgba(227,175,137,1);
-    width: 100%;
-    height: 314px;
+  .e2_0 { 
+    background-color:rgba(187.00000405311584, 96.61667078733444, 96.61667078733444, 1);
+    width:100%;
+    height:90px;
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .e2_1 { 
+    color:rgba(255, 255, 255, 1);
+    height:84px;
+    font-family:Baloo 2;
+    text-align:left;
+    font-size:36px;
+    letter-spacing:0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+  }
+
+  .e8_16 { 
+    background-color:rgba(255, 255, 255, 1);
+    width:205px;
+    height:59px;
+    border:1px solid rgba(0, 0, 0, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    top: 15px;
+    left: 250px;
+  }
+
+  .e8_17 { 
+    color:rgba(0, 0, 0, 1);
+    font-family:Baloo 2;
+    text-align:center;
+    font-size:30px;
+    letter-spacing:0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  
+  .v1 { 
+    background-color:rgba(227.37499594688416, 175.1734882593155, 137.37238705158234, 1);
+    width:100%;
+    height:314px;
+  }
+
+  .e4_2 { 
+    color:rgba(255, 255, 255, 1);
+    width:1340px;
+    height:194px;
+    font-family:Baloo 2;
+    text-align:left;
+    font-size:144px;
+    letter-spacing:0;
+    margin-left: 10px;
+  }
+  
+  .e4_5 { 
+    color:rgba(0, 0, 0, 1);
+    width:836px;
+    height:120px;
+    font-family:Alex Brush;
+    text-align:center;
+    font-size:72px;
+    letter-spacing:0;
+    position: relative;
+    left: 100px;
+  }
+  
+
+  .e4_8 { 
+    background-color:rgba(255, 255, 255, 1);
+    width:320px;
+    height:80px;
+    border:2px solid rgba(187.00000405311584, 96.61667078733444, 96.61667078733444, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .e7_5 { 
+    color:rgba(0, 0, 0, 1);
+    font-family:Alex Brush;
+    text-align: center;
+    font-size:72px;
+    letter-spacing:0;
+  }
+  
+  .avocat { 
+    width:397px;
+    height:268px;
+    background-image: url("i60852-top-15-des-recettes-healthy-du-moment.png");
+    background-repeat:no-repeat;
+    background-size:cover;
+    margin: 30px;
+  }
+
+  .gratin { 
+    width:397px;
+    height:268px;
+    background-image: url("i144023-gratin-de-pates-et-chou-fleur.png");
+    background-repeat:no-repeat;
+    background-size:cover;
+    margin: 30px;
+  }
+
+  .poelee { 
+    width:397px;
+    height:268px;
+    background-image: url("recettes-lasagne-au-boeuf-et-aux-champignons-bs009996-1160x650-pub-71375.png");
+    background-repeat:no-repeat;
+    background-size:cover;
+    margin: 30px;
+  }
+
+  .corsica { 
+    width:397px;
+    height:268px;
+    background-image: url("93607de4-f877-4c0f-9683-5bc0c65dee55-recettes-plats-au-four-tout-en-un-one-sheet-pan-768x512.png");
+    background-repeat:no-repeat;
+    background-size:cover;
+    margin: 30px;
+  }
+
+  .lasagnes { 
+    width:397px;
+    height:268px;
+    background-image: url("i131341-lasagnes-bolognaise.png");
+    background-repeat:no-repeat;
+    background-size:cover;
+    margin: 30px;
+  }
+
+  .tagliatelles { 
+    width:397px;
+    height:268px;
+    background-image: url("Tagliatelles-au-bacon-Recette-TagliatelleChampignon-750x410.png");
+    background-repeat:no-repeat;
+    background-size:cover;
+    margin: 30px;
+  }
+  
+  .e8_1 { 
+    background-color:rgba(227.00000166893005, 175.00000476837158, 137.00000703334808, 1);
+    width:100%;
+    height:351px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .e8_26 { 
+    color:rgba(255, 255, 255, 1);
+    font-family:Baloo 2;
+    text-align: center;
+    font-size:144px;
+    letter-spacing:0;
+  }
+
+  .v8_23 {
+    color: #333;
+    font-family: Baloo 2;
+    font-weight: SemiBold;
+    font-size: 30px;
+    opacity: 1;
+    text-align: center;
+  }
+  
+  .row-menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .top-recettes {
+    display: flex;
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bottom-recettes {
+    display: flex;
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .types-plats {
+    color: #bc6161;
+    font-family: Baloo 2;
+    font-weight: SemiBold;
+    text-align: center;
+    font-size: 40px;
+    opacity: 1; 
+  }
+
+  .logo1 {
+    position: relative;
+    top: 50px;
+    left: 50px;
+  }
+
+  .logo2 {
+    text-align: center;
   }
