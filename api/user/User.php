@@ -13,6 +13,8 @@
 		}
 
 		public function	set($data) {
+			if ($data == 0)
+				return (0);
 			foreach ($data AS $key => $value)
 				$this->{$key} = $value;
 		}

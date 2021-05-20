@@ -12,19 +12,21 @@ class Recipe {
 	}
 
 	public function	set($data) {
+		if ($data == 0)
+			return (0);
 		foreach ($data AS $key => $value)
 			$this->{$key} = $value;
 	}
 
 	public function	selectUserRecipes($conn) {
-		$select_query = "SELECT * FROM `recette` WHERE id_user='$this->userId' AND is_delete='0'";
+		$select_query = "SELECT * FROM `recette` WHERE id_user='$this->id_user' AND is_delete='0'";
 		$stmt = $conn->prepare($select_query);
 		$stmt->execute();
 		return  $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	public function	selectRecipe($conn) {
-		$select_recette = "SELECT * from recette where id = $this->recipeId";
+		$select_recette = "SELECT * from recette where id = $this->id";
 		$stmt = $conn->prepare($select_recette);
 		$stmt->execute();
 		$res =  $stmt->fetchAll(PDO::FETCH_ASSOC);
