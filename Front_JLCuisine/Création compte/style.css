@@ -1,0 +1,101 @@
+
+/* Block Abonnement */
+
+.abonnement-block{
+    background-color: #BB6161;
+    width: 100%;
+    height: 5%;
+    margin: 0px;
+    display:flex;
+    flex: inline-block;
+    justify-content: space-between;
+}
+.abonnement-button{
+    font-weight: bold;
+}
+
+/* Block Title */
+.title-block{
+    background-color: #E3AF89;
+    display: flex;
+    flex-direction: row;
+}
+
+.main-title{
+    font-weight: bold;
+    color: white;
+}
+/* .img{
+
+} */
+.slogan{
+    font-family: 'Alex Brush';
+    color: black;
+}
+
+/* Block Nav */
+.nav-list{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-grow: 1;
+    list-style-type: none;
+}
+
+/* Block Body */
+.body-block{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+.body-title{
+    color: #BB6161;
+    font-weight: bold;
+    text-align: center;
+}
+.input-text{
+    background-color: #EEE5E5;
+}
+::placeholder { 
+    color: #BB6161;
+    opacity: 1;
+    font-weight: bold;
+}
+.inscription-link{
+    background-color: #EEE5E5;
+    font-weight: bold;
+    color: #BB6161;
+}
+.connexion-link{
+    font-weight: bold;
+    color: black;
+}
+
+
+/* Block Footer */
+.footer-block{
+    background-color: #E3AF89;
+
+}
+.footer-title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.title-footer{
+    color: white;
+}
+.footer-title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.footer-list{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-grow: 1;
+    list-style-type: none;
+}
