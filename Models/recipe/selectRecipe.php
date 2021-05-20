@@ -15,20 +15,15 @@ $db_connection = new Database();
 $conn = $db_connection->dbConnection();
 // GET DATA FORM REQUEST
 $data = json_decode(file_get_contents("php://input"), true);
+$recipe = new Recipe($data);
 //CREATE MESSAGE ARRAY AND SET EMPTY
 $msg['message'] = '';
-if (isset($_GET['id_user'])) {
-    $recipe = new Recipe(null);
-    $recipe->id_user = $_GET['id_user'];
+if (!empty($recipe->id_user)) {
     $res =  $recipe->selectUserRecipes($conn);
-
     echo json_encode($res);
 
     // PUSH POST DATA IN OUR $posts_array ARRAY
-} elseif (isset($_GET['id_recipe'])) {
-
-    $recipe = new Recipe(null);
-    $recipe->id = $_GET['id_recipe'];
+} elseif (!empty($recipe->id)) {
     // TODO verif si tout c'est bien passé
     $recipe->selectRecipe($conn);
     $ingredientsRes =  Ingredient::selectIngredientsFromRecipe($conn, $recipe->id);
