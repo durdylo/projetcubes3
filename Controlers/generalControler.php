@@ -1,6 +1,7 @@
 <?php
 include_once('Views/allViews.php');
 include_once('Models/user/User.php');
+include_once('Models/recipe/Recipe.php');
 include_once('database.php');
 class generalControler
 {
@@ -44,17 +45,27 @@ class generalControler
         $view = new generalView;
         return $view->setHTMLFooter();
     }
-    private function setHeader()
+    private function setHeader($isConected = false, $userId = false)
     {
         $view = new generalView;
-        return $view->setHTMLHeader();
+        return $view->setHTMLHeader($isConected , $userId);
     }
     private function setAccueil()
     {
 
+        $obj = new Recipe([]);
         $view = new accueilView;
+        $recipes = $obj->selectRecipes($this->conn);
+        if(isset($_SESSION['userId'])){
 
-        $this->html =  $this->setHead() . $this->setHeader() . $view->setHTMLAccueil() . $this->setFooter();
+            $isConected = true;
+            $userId = $_SESSION['userId'];
+        }else{
+            $isConected = false;
+            $userId = false;
+        }
+        var_dump($_SESSION['userId']);
+        $this->html =  $this->setHead() . $this->setHeader($isConected, $userId) . $view->setHTMLAccueil($recipes) . $this->setFooter();
     }
 
     private function setMoncompte($userId = false)
@@ -66,13 +77,13 @@ class generalControler
             }
             $usertmp = new User($_POST);
             $usertmp->selectUser($this->conn);
-            var_dump($usertmp);
-            if ($usertmp->id) {
+            if (isset($usertmp)) {
+                var_dump($usertmp);
                 $_SESSION['userId'] = $usertmp->id;
                 header('location: index.php');
             }
         }
-        if (!$userId) {
+        if ($userId == false) {
 
             $this->html = $this->setHead() . $this->setHeader() . $view->setHTMLConnexion() . $this->setFooter();
         } else {

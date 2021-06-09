@@ -29,12 +29,14 @@ class User
 		$stmt = $conn->prepare($select_query);
 		$stmt->execute();
 		$res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		if ($res == 0 || count($res) == 0 || !password_verify($this->password, $res[0]["password"])) {
+		
+		if ($res === false || count($res) === 0 || password_verify($this->password, $res[0]["password"]) === false) {
+	
 			return (false);
 		} else {
 			$this->set($res[0]);
 		}
-		return (true);
+		return true;
 	}	
 	
 	public function selectUserById($conn)

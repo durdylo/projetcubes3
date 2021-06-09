@@ -6,7 +6,7 @@ class accueilView
     {
     }
 
-    public function setHTMLAccueil()
+    public function setHTMLAccueil($data)
     {
         return "<body>
         <div class='row-menu'>

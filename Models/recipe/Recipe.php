@@ -40,7 +40,13 @@ class Recipe {
 		}
 		return (true);
 	}
-
+	public function	selectRecipes($conn) {
+		$select_recette = "SELECT recipe.*, category.name as 'name_category' FROM `recipe` LEFT JOIN category ON recipe.id_category = category.id";
+		$stmt = $conn->prepare($select_recette);
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	
+	}
 	public function	insertRecipe($conn) {
 		$insert_query = "INSERT INTO `recipe`(name, description, id_user, id_category)VALUES(:name,:description,:id_user,:id_category)";
         $insert_stmt = $conn->prepare($insert_query);

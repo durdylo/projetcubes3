@@ -28,12 +28,13 @@ class generalView
     </div>";
     }
 
-    public function setHTMLHeader()
+    public function setHTMLHeader($isConected = false, $idUser = false)
     {
+        $link = ($isConected !== false && $idUser !== false ? " <a href='index.php?p=cmp&idUser=".$idUser."' class='e8_17'>Mon compte</a>" : " <a href='index.php?p=cmp' class='e8_17'>Se connecter</a>");
         return " <div class='e2_0'>
         <span  class='e2_1'>OFFRE ABONNEMENT : ACCÉDEZ À DES MILLIERS DE RECETTES SANS LIMITE !</span>
         <div class='e8_16'>
-            <a href='index.php?p=cmp' class='e8_17'>Se connecter</a>
+           $link
         </div>
     </div><div class='v1'>
         <span  class='e4_2'>JLCuisine</span>
