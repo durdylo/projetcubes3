@@ -57,7 +57,7 @@ class User
 	{
 		if (!($encodedpass = password_hash($this->password, PASSWORD_DEFAULT)))
 			return (false);
-		$insert_query = "INSERT INTO `user`(name,email,password, firstname) VALUES(:name,:email,:password,:firstname)";
+		$insert_query = "INSERT INTO `user`(name,email,password, firstname, id_role) VALUES(:name,:email,:password,:firstname,2)";
 
 		$insert_stmt = $conn->prepare($insert_query);
 		// DATA BINDING

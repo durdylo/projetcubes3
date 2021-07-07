@@ -1,5 +1,6 @@
 <?php
 require_once('User.php');
+require_once('../Response.php');
 // SET HEADER
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
@@ -16,21 +17,24 @@ $conn = $db_connection->dbConnection();
 $data = json_decode(file_get_contents("php://input"));
 $new_user = new User($data);
 
+$result = new Response;
 //CREATE MESSAGE ARRAY AND SET EMPTY
-$msg['message'] = '';
-if (strlen($data->email) > 0 && strlen($data->password) > 0) {
+$result->message = "";
+if (strlen($new_user->email) > 0 && strlen($new_user->password) > 0) {
     if (!$new_user->selectUser($conn)) {
-        $msg['state'] = 'error';
-        $msg['message'] = 'Invalid credentials';
+		$result->state = 'error';
+        $result->message = 'Invalid credentials';
     } else {
-        $msg['state'] = 'success';
-        $msg['message'] = 'Login successful';
-        echo json_encode(array("id" => $new_user->id, "name" => $new_user->name, "firstname" => $new_user->firstname, "email" => $new_user->email));
+        $result->state = 'success';
+		$result->message = 'Login successful';
+		$result->data = array("id" => $new_user->id, "name" => $new_user->name, "firstname" => $new_user->firstname, "email" => $new_user->email);
+//        echo json_encode(array("id" => $new_user->id, "name" => $new_user->name, "firstname" => $new_user->firstname, "email" => $new_user->email));
     }
     // PUSH POST DATA IN OUR $posts_array ARRAY
 } else {
-    $msg['state'] = 'error';
-    $msg['message'] = "Email and password can't be empty";
+    $result->state = 'error';
+	$result->message = "Email and password can't be empty";
 }
-echo json_encode($msg);
+
+echo json_encode($result);
 // gestion error
