@@ -31,8 +31,13 @@ class Step {
 	public static function selectStepsFromRecipe($conn, $id_recipe) {
 		$select_query = "SELECT * FROM `step` WHERE id_recipe='$id_recipe' ORDER BY step_order ASC;";
 		$stmt = $conn->prepare($select_query);
-		$stmt->execute();
-		return  $stmt->fetchAll(PDO::FETCH_ASSOC);
+		try {
+			$stmt->execute();
+			return  $stmt->fetchAll(PDO::FETCH_ASSOC);
+		}
+		catch (Exception $e) {
+			return (false);
+		}
 	}
 	
 	public static function	insertStepsInRecipe($conn, $id_recipe, $step_order, $text) {
@@ -42,7 +47,12 @@ class Step {
 		$insert_stmt->bindValue(':id_recipe', htmlspecialchars(strip_tags($id_recipe)), PDO::PARAM_INT);
 		$insert_stmt->bindValue(':step_order', htmlspecialchars(strip_tags($step_order)), PDO::PARAM_INT);
 		$insert_stmt->bindValue(':text', htmlspecialchars(strip_tags($text)), PDO::PARAM_STR);
-		return $insert_stmt->execute();
+		try {
+			return $insert_stmt->execute();
+		}
+		catch (Exception $e) {
+			return (false);
+		}
 	}
 
 	public function			insertStep($conn) {

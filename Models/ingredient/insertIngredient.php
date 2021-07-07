@@ -1,5 +1,7 @@
 <?php
 require_once('Ingredient.php');
+require_once('../Response.php');
+
 // SET HEADER
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
@@ -16,22 +18,20 @@ $conn = $db_connection->dbConnection();
 $data = json_decode(file_get_contents("php://input"));
 $ingredient = new Ingredient($data);
 
-//CREATE MESSAGE ARRAY AND SET EMPTY
-$msg['message'] = '';
+$result = new Response;
+$result->state = 'error';
 
 // CHECK IF RECEIVED DATA FROM THE REQUEST
 if (!empty($ingredient->name)) {
 	if ($ingredient->insertIngredient($conn)) {
-		$msg['state'] = 'success';
-		$msg['message'] = 'Data Inserted Successfully';
+		$result->state = 'success';
+		$result->message = 'Data Inserted Successfully';
 	} else {
-		$msg['message'] = 'Data not Inserted';
-		$msg['state'] = 'error';
+		$result->message = 'Data not Inserted';
 	}
 } else {
-    $msg['state'] = 'error';
-    $msg['message'] = 'Please fill all the fields';
+    $result->message = 'Please fill all the fields';
 }
 //ECHO DATA IN JSON FORMAT
-echo json_encode($msg);
+echo json_encode($result);
 ?>

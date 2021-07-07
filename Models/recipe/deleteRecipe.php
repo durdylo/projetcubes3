@@ -2,6 +2,7 @@
 require_once('Recipe.php');
 require_once('../ingredient/Ingredient.php');
 require_once('../step/Step.php');
+require_once('../Response.php');
 // SET HEADER
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
@@ -16,18 +17,18 @@ $conn = $db_connection->dbConnection();
 // GET DATA FORM REQUEST
 $data = json_decode(file_get_contents("php://input"), true);
 $recipe = new Recipe($data);
-//CREATE MESSAGE ARRAY AND SET EMPTY
-$msg['message'] = '';
-if (!empty($recipe->id)) {
+
+$result = new Response;
+$result->state = 'error';
+
+if (!empty($data->id)) {
 	if ($recipe->deleteRecipe($conn)) {
-		$msg['state'] = 'success';
-		$msg['message'] = 'Data Removed Successfully';
+		$result->state = 'success';
+		$result->message = 'Data Removed Successfully';
 	} else {
-		$msg['message'] = 'Data not Removed';
-		$msg['state'] = 'error';
+		$result->message = 'Data not Removed';
 	}
 } else {
-    $msg['state'] = 'error';
-    $msg['message'] = 'Please fill all the fields';
+    $result->message = 'Please fill all the fields';
 }
-echo json_encode($msg);
+echo json_encode($result);

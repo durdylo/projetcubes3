@@ -19,10 +19,9 @@ $new_user = new User($data);
 
 $result = new Response;
 //CREATE MESSAGE ARRAY AND SET EMPTY
-$result->message = "";
+$result->state = 'error';
 if (strlen($new_user->email) > 0 && strlen($new_user->password) > 0) {
     if (!$new_user->selectUser($conn)) {
-		$result->state = 'error';
         $result->message = 'Invalid credentials';
     } else {
         $result->state = 'success';
@@ -32,7 +31,6 @@ if (strlen($new_user->email) > 0 && strlen($new_user->password) > 0) {
     }
     // PUSH POST DATA IN OUR $posts_array ARRAY
 } else {
-    $result->state = 'error';
 	$result->message = "Email and password can't be empty";
 }
 

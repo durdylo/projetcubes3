@@ -22,9 +22,13 @@ class Recipe {
 	public function	selectUserRecipes($conn) {
 		$select_query = "SELECT recipe.*, category.name as 'name_category' FROM `recipe` LEFT JOIN category ON recipe.id_category = category.id WHERE id_user='$this->id_user'";
 		$stmt = $conn->prepare($select_query);
-		$stmt->execute();
-		
-		return  $stmt->fetchAll(PDO::FETCH_ASSOC);
+		try {
+			$stmt->execute();
+			return  $stmt->fetchAll(PDO::FETCH_ASSOC);
+		}
+		catch (Exception $e) {
+			return (false);
+		}
 	}
 
 	public function	selectRecipe($conn) {

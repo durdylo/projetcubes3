@@ -1,5 +1,6 @@
 <?php
 require_once('User.php');
+require_once('../Response.php');
 // SET HEADER
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
@@ -17,37 +18,34 @@ $data = json_decode(file_get_contents("php://input"));
 $new_user = new User($data);
 
 //CREATE MESSAGE ARRAY AND SET EMPTY
-$msg['message'] = '';
+$result = new Response;
+$result->state = 'error';
 
 // CHECK IF RECEIVED DATA FROM THE REQUEST
 // CHECK DATA VALUE IS EMPTY OR NOT
 if (!empty($data->name) && !empty($data->email) && !empty($data->password) && !empty($data->firstname)&& !empty($data->confirmpassword)) {
-    if ($data->password != $data->confirmpassword) {
-        $msg['message'] = 'les mots de passe ne correspondent pas';
-    } else if (!is_password_ok($data->password)) {
-        $msg['state'] = 'error';
-        $msg['message'] = 'Invalid password. Please enter a password containing at least one uppercase letter, one lowercase letter and a number and 8 characters.';
-    } else if (email_already_exists($conn, $data->email)) {
-        $msg['state'] = 'error';
-        $msg['message'] = 'Account already exists';
+    if (strcmp($data->password, $data->confirmpassword) != 0) {
+        $result->message = 'les mots de passe ne correspondent pas';
+    } else if (!is_password_ok($new_user->password)) {
+        $result->message = 'Invalid password. Please enter a password containing at least one uppercase letter, one lowercase letter and a number and 8 characters.';
+    } else if (email_already_exists($conn, $new_user->email)) {
+        $result->message = 'Account already exists';
     }
-    if ($new_user->insertUser($conn)) {
-        $msg['state'] = 'success';
-        $msg['message'] = 'Data Inserted Successfully';
+    else if ($new_user->insertUser($conn)) {
+		$result->state = 'success';
+        $result->message = 'Data Inserted Successfully';
     } else {
-        $msg['message'] = 'Data not Inserted';
-        $msg['state'] = 'error';
+       $result->message = 'Data not Inserted';
     }
 } else {
-    $msg['state'] = 'error';
-    $msg['message'] = 'Oops! empty field detected. Please fill all the fields';
+   $result->message = 'Oops! empty field detected. Please fill all the fields';
 }
 
 //ECHO DATA IN JSON FORMAT
-echo json_encode($msg);
+echo json_encode($result);
 
     function    is_password_ok($password) {
-        return (strlen($password) >= 8 && preg_match("~[0-9]+~", $password) && preg_match("~[a-z]+~", $password) && preg_match("~[A-Z]+~", $password));
+		return (strlen($password) >= 8 && preg_match("~[0-9]+~", $password) && preg_match("~[a-z]+~", $password) && preg_match("~[A-Z]+~", $password));
     }
 
     function    email_already_exists($conn, $email) {

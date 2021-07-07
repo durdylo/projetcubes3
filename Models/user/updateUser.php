@@ -1,5 +1,6 @@
 <?php
 require_once('User.php');
+require_once('../Response.php');
 // SET HEADER
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
@@ -17,27 +18,25 @@ $data = json_decode(file_get_contents("php://input"));
 $user = new User($data);
 
 //CREATE MESSAGE ARRAY AND SET EMPTY
-$msg['message'] = '';
+$result = new Response;
+$result->state = 'error';
 
 // CHECK IF RECEIVED DATA FROM THE REQUEST
 if (!empty($user->id)) {
 	if ($user->selectUserById($conn)) {
 		$user->set($data);
 		if ($user->updateUser($conn)) {
-			$msg['state'] = 'success';
-			$msg['message'] = 'Data Updated Successfully';
+			$result->state = 'success';
+			$result->message = 'Data Updated Successfully';
 		} else {
-			$msg['message'] = 'Data not Updated';
-			$msg['state'] = 'error';
+			$result->message = 'Data not Updated';
 		}
 	} else {
-		$msg['message'] = 'Data not Updated';
-		$msg['state'] = 'error';
+		$result->message = 'Data not Updated';
 	}
 } else {
-    $msg['state'] = 'error';
-    $msg['message'] = 'Please fill all the fields';
+    $result->message = 'Please fill all the fields';
 }
 //ECHO DATA IN JSON FORMAT
-echo json_encode($msg);
+echo json_encode($result);
 ?>
