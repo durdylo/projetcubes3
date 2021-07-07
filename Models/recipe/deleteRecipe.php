@@ -15,7 +15,7 @@ require '../../database.php';
 $db_connection = new Database();
 $conn = $db_connection->dbConnection();
 // GET DATA FORM REQUEST
-$data = json_decode(file_get_contents("php://input"), true);
+$data = json_decode(file_get_contents("php://input"));
 $recipe = new Recipe($data);
 
 $result = new Response;

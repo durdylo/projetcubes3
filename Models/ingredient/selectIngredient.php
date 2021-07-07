@@ -22,7 +22,7 @@ $result = new Response;
 $result->state = 'error';
 
 // CHECK IF RECEIVED DATA FROM THE REQUEST
-if (!($res = Ingredient::selectAllIngredients($conn))) {
+if (($res = Ingredient::selectAllIngredients($conn)) === false) {
 	$result->message = "select failed";
 }
 else {

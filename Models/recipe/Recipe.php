@@ -47,8 +47,13 @@ class Recipe {
 	public function	selectRecipes($conn) {
 		$select_recette = "SELECT recipe.*, category.name as 'name_category' FROM `recipe` LEFT JOIN category ON recipe.id_category = category.id";
 		$stmt = $conn->prepare($select_recette);
-		$stmt->execute();
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		try {
+			$stmt->execute();
+			return  $stmt->fetchAll(PDO::FETCH_ASSOC);
+		}
+		catch (Exception $e) {
+			return (false);
+		}
 	
 	}
 	public function	insertRecipe($conn) {
@@ -78,7 +83,7 @@ class Recipe {
 	}
 
 	public function	deleteRecipe($conn) {
-		if (!(Step::deleteStepsFromRecipe($conn, $this->id)) || !(Ingredient::deleteIngredientsFromRecipe($conn, $this->id)))
+		if ((Step::deleteStepsFromRecipe($conn, $this->id)) === false || (Ingredient::deleteIngredientsFromRecipe($conn, $this->id)) === false)
 			return (false);
 		$delete_query = "DELETE FROM recipe WHERE id= :id";
 		$stmt = $conn->prepare($delete_query);

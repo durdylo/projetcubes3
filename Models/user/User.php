@@ -37,7 +37,21 @@ class User
 			$this->set($res[0]);
 		}
 		return true;
-	}	
+	}
+	
+	public static function selectAllUsers($conn)
+	{
+		$select_query = "SELECT * FROM `user` WHERE is_deleted='0';";
+		$stmt = $conn->prepare($select_query);
+		$stmt->execute();
+		$res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		if ($res === false) {
+			return (false);
+		} else {
+			return $res;
+		}
+	}
 	
 	public function selectUserById($conn)
 	{
@@ -45,7 +59,7 @@ class User
 		$stmt = $conn->prepare($select_query);
 		$stmt->execute();
 		$res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		if ($res == 0 || count($res) == 0 || !password_verify($this->password, $res[0]["password"])) {
+		if ($res == 0 || count($res) == 0) {
 			return (false);
 		} else {
 			$this->set($res[0]);
