@@ -26,8 +26,7 @@ if (strlen($new_user->email) > 0 && strlen($new_user->password) > 0) {
     } else {
         $result->state = 'success';
 		$result->message = 'Login successful';
-		$result->data = array("id" => $new_user->id, "name" => $new_user->name, "firstname" => $new_user->firstname, "email" => $new_user->email);
-//        echo json_encode(array("id" => $new_user->id, "name" => $new_user->name, "firstname" => $new_user->firstname, "email" => $new_user->email));
+		$result->data = array("id" => $new_user->id, "name" => $new_user->name, "firstname" => $new_user->firstname, "email" => $new_user->email, "role" => $new_user->id_role);
     }
     // PUSH POST DATA IN OUR $posts_array ARRAY
 } else {
