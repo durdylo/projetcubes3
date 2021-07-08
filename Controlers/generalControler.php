@@ -67,7 +67,7 @@ class generalControler
 
         $result = curl_exec($curl);
         curl_close($curl);
-
+        
         return $result;
     }
 
@@ -115,7 +115,6 @@ class generalControler
             $isConected = false;
             $userId = false;
         }
-        var_dump($_SESSION['userId']);
         $this->html =  $this->setHead() . $this->setHeader($isConected, $userId) . $view->setHTMLAccueil($recipes) . $this->setFooter();
     }
 
@@ -129,7 +128,6 @@ class generalControler
             $usertmp = new User($_POST);
             $usertmp->selectUser($this->conn);
             if (isset($usertmp)) {
-                var_dump($usertmp);
                 $_SESSION['userId'] = $usertmp->id;
                 header('location: index.php');
             }
@@ -215,7 +213,6 @@ class generalControler
             $arrayOpts['id'] = $idRecipe;
             // var_dump(json_encode($arrayOpts));
             $res = $this->callAPI('GET', 'http://localhost/web/projetCubes3/Models/recipe/updateRecipe.php', $arrayOpts);
-            var_dump($res);
         }
         $unitObj = new Unit([]);
         $units = $unitObj->selectAllUnits($this->conn);
@@ -227,7 +224,6 @@ class generalControler
         $res = $this->callAPI('GET',"http://localhost/web/projetCubes3/Models/recipe/selectRecipe.php", $data );
         $view = new recipeView;
         $res = json_decode($res, true);
-        var_dump($res);
         $this->html = $this->setHead() . $this->setHeader() . $view->setHtmlAdd($units, $ingredients, $categories, true, $res['data'] ) . $this->setFooter();
     }
 }

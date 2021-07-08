@@ -40,7 +40,6 @@ class monCompteView
 
     public function setHTLMonCompte($user,  $recipes)
     {
-        var_dump($user);
 
         $html = "<h2 class='body-title'>Mon Compte</h2>";
         $html .= "<nav><a href='index.php?p=cmp&a=addRecipe'>Créer une recette</a></nav>";
