@@ -33,8 +33,8 @@ class Ingredient {
 		" INNER JOIN unit on ingredient_recipe.id_unit = unit.id where ingredient_recipe.id_recipe = '$recipe_id'";
 		$stmt = $conn->prepare($select_ingredients);
 		try {
-			return $stmt->execute();
-			return  $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$stmt->execute();
+			return $stmt->fetchAll(PDO::FETCH_ASSOC);
 		}
 		catch (Exception $e) {
 			return (false);

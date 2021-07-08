@@ -38,7 +38,7 @@ if (!empty($data->id_user)) {
    if ($recipe->selectRecipe($conn) === false) {
 		$result->message = 'recipe select failed';
    }
-   else if  (($ingredientsRes =  Ingredient::selectIngredientsFromRecipe($conn, $recipe->id) === false) ||
+   else if  (($ingredientsRes = Ingredient::selectIngredientsFromRecipe($conn, $recipe->id)) === false ||
   		 ($stepsRes = Step::selectStepsFromRecipe($conn, $recipe->id)) === false) {
 			$result->message = 'details select failed';
 	}
