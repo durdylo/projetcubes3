@@ -38,12 +38,12 @@ class monCompteView
     </div>";
     }
 
-    public function setHTLMonCompte($user,  $recipes, $unites)
+    public function setHTLMonCompte($user,  $recipes)
     {
         var_dump($user);
 
         $html = "<h2 class='body-title'>Mon Compte</h2>";
-        $html .= "<nav><a href='index.php?p=cmp&sp=recipes'>Créer une recette</a></nav>";
+        $html .= "<nav><a href='index.php?p=cmp&a=addRecipe'>Créer une recette</a></nav>";
         foreach ($recipes as $recipe) {
             $html .=  "
             <div>
@@ -58,17 +58,17 @@ class monCompteView
     }
 
     public function setCreateRecipe($ingredients){
-        $ingredientsHTML = '';
-        foreach ($ingredients as $ingredient) {
-            $ingredientsHTML .= "<option value='".$ingredient['name']."'>".$ingredient['name']."</option>";
-        }
-        return "   <div class='body-block ajout_ingredients'>
-        <h2 class=''></h2>
+        // $ingredientsHTML = '';
+        // foreach ($ingredients as $ingredient) {
+        //     $ingredientsHTML .= "<option value='".$ingredient['name']."'>".$ingredient['name']."</option>";
+        // }
+        // return "   <div class='body-block ajout_ingredients'>
+        // <h2 class=''></h2>
         
-        <select class='selectIngredients'>
-        $ingredientsHTML
-</select>
-<button id='add'>+</button>
-    </div>";
+        // <select class='selectIngredients'>
+        // $ingredientsHTML
+        //     </select>
+        // </div>";
+        
     }
 }

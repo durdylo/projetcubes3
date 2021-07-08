@@ -3,6 +3,9 @@ include_once('Views/allViews.php');
 include_once('Models/user/User.php');
 include_once('Models/recipe/Recipe.php');
 include_once('Models/ingredient/Ingredient.php');
+include_once('Models/unit/Unit.php');
+include_once('Models/category/Category.php');
+include_once('Models/FPDF/fpdf.php');
 include_once('database.php');
 class generalControler
 {
@@ -24,8 +27,10 @@ class generalControler
         if (isset($_GET['p'])) {
             if ($_GET['p'] == 'cmp') {
                 if (isset($_SESSION['userId'])) {
-
                     $this->setMoncompte($_SESSION['userId']);
+                    if(isset($_GET['a']) && $_GET['a'] == 'addRecipe'){
+                        $this->createRecipe();
+                    }
                 } else {
                     $this->setMoncompte();
                 }
@@ -65,8 +70,16 @@ class generalControler
         $res = $this->callAPI('GET',"http://localhost/web/projetCubes3/Models/recipe/selectRecipe.php", $data );
         $view = new recipeView;
         $res = json_decode($res, true);
-        $view->setHtmlDetails($res);
+        if(isset($_SESSION['userId'])){
 
+            $isConected = true;
+            $userId = $_SESSION['userId'];
+        }else{
+            $isConected = false;
+            $userId = false;
+        }
+
+        $this->html =  $this->setHead() . $this->setHeader($isConected, $userId) .  $view->setHtmlDetails($res) . $this->setFooter();
     }
     private function setHead()
     {
@@ -145,5 +158,33 @@ class generalControler
         } else {
             $this->html = $this->setHead() . $this->setHeader() . $view->setHTMLInscription() . $this->setFooter();
         }
+    }
+    private function createRecipe(){
+        if(isset($_POST['name'])){
+            $objRecipe = new Recipe([]);
+            $ingredientsPost = [];
+            $stepsPost = [];
+            foreach ($_POST as $key => $item) {
+                $tmp = explode('_', $key);
+                if ($tmp[0] === 'ingr') {
+                    array_push($ingredientsPost, ['id' => $item, 'quantity' => 'qty_'.$tmp[1], 'id_unit'=> 'unit_'.$tmp[1]]);
+                } elseif ($tmp[0] === 'step') {
+                    array_push($stepsPost, ['step_order' => $tmp[1], 'text' => $item]);
+                }
+            }
+            $arrayOpts = ['name' => $_POST['name'], 'description' => $_POST['category'], 'id_user' => $_SESSION['userId']];
+            array_push($arrayOpts, $ingredientsPost);
+            array_push($arrayOpts, $stepsPost);
+            
+
+        }
+        $unitObj = new Unit([]);
+        $units = $unitObj->selectAllUnits($this->conn);
+        $ingredientsObj = new Ingredient([]);
+        $ingredients = $ingredientsObj->selectAllIngredients($this->conn);
+        $categoriesObj = new Category([]);
+        $categories = $categoriesObj->selectAllCategories($this->conn);
+        $view = new recipeView;
+        $this->html = $this->setHead() . $this->setHeader() . $view->setHtmlAdd($units, $ingredients, $categories) . $this->setFooter();
     }
 }

@@ -185,3 +185,28 @@
   #recettes div img{
     max-width: 90%;
   }
+
+
+  figcaption {
+    color: #bc6161;
+    font-family: Baloo 2;
+    font-weight: SemiBold;
+    text-align: center;
+    font-size: 40px;
+    opacity: 1; 
+  
+    
+  }
+  
+  .row-items {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 20px;
+      margin-top: 20px;
+  }
+
+.column-items {
+      display: flex;
+      flex-direction: column;
+  }
+ 

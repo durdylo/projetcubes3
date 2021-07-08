@@ -147,7 +147,7 @@
     opacity: 1; 
   }
 
-  .avocat { 
+  .imgDetail { 
     width:397px;
     height:268px;
     background-repeat:no-repeat;
@@ -170,17 +170,18 @@
     text-align: center;
     font-size: 40px;
     opacity: 1; 
+  
     
   }
   
-  #row-items {
+  .row-items {
       display: flex;
       flex-direction: row;
       margin-bottom: 20px;
       margin-top: 20px;
   }
 
-  #column-items {
+.column-items {
       display: flex;
       flex-direction: column;
   }
