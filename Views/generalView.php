@@ -32,7 +32,7 @@ class generalView
 
         <p class='v8_23'>Copyrights © 2021 - <a href='#'>Mentions légales</a> - <a href='#'>Politique de
                 confidentialité</a> - CGU - Créé par <a href='#'>Webcom</a></p>
-        <img class='logo2' src='./assets/images/Rectangle2.png' alt='Logo' width='100' height='100'>
+        <a href='index.php'><img class='logo2' src='./assets/images/Rectangle2.png' alt='Logo' width='100' height='100'></a>
 
     </div>";
     }
