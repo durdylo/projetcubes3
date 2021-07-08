@@ -12,7 +12,7 @@ class monCompteView
         <div class='connexion-body'>
         <form method='post'>
             <input class='connexion-button-input' name='email' type='text' placeholder='Adresse Mail'>
-            <input class='connexion-button-input' type='password' name='mdp' placeholder='Mot de Passe'>
+            <input class='connexion-button-input' type='password' name='password' placeholder='Mot de Passe'>
             <button class='connexion-button'>Se connecter</button>
             <a class='creation-link' href='index.php?p=inscr'>Première visite ? Créez un compte !</a>
             </form>
@@ -35,6 +35,25 @@ class monCompteView
         </form>
 
         <a class='connexion-link' href='index.php?p=cmp'>Déjà membre ? Connectez-vous</a>
+    </div>";
+    }
+
+    public function setHTLMonCompte($user, $ingredients, $recettes, $unites)
+    {
+
+        var_dump($ingredients);
+        $ingredientsHTML = '';
+        foreach ($ingredients as $ingredient) {
+            $ingredientsHTML .= "<option value='".$ingredient['name']."'>".$ingredient['name']."</option>";
+        }
+        return "   <div class='body-block ajout_ingredients'>
+        <h2 class='body-title'>Mon Compte</h2>
+        <h2 class=''>".$user['']."</h2>
+        
+        <select class='selectIngredients'>
+        $ingredientsHTML
+</select>
+<button id='add'>+</button>
     </div>";
     }
 }

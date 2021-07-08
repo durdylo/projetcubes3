@@ -2,6 +2,8 @@
 require_once('Recipe.php');
 require_once('../ingredient/Ingredient.php');
 require_once('../step/Step.php');
+require_once('../Response.php');
+
 // SET HEADER
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
@@ -17,8 +19,9 @@ $conn = $db_connection->dbConnection();
 // GET DATA FORM REQUEST
 $data = json_decode(file_get_contents("php://input"));
 $new_recipe = new Recipe($data);
-//CREATE MESSAGE ARRAY AND SET EMPTY
-$msg['message'] = '';
+
+$result = new Response;
+$result->state = 'error';
 
 // CHECK DATA VALUE IS EMPTY OR NOT
 if (!empty($data->name) && !empty($data->description) && !empty($data->id_user) && isset($data->id_category) && !empty($data->ingredients) && !empty($data->steps)) {
@@ -26,23 +29,38 @@ if (!empty($data->name) && !empty($data->description) && !empty($data->id_user) 
     if ($new_recipe->insertRecipe($conn)) {
 
         $idRecipe = $conn->lastInsertId();
-
-        foreach ($data->ingredients as $ingredient) {
-            //TODO check if succeeded
-            Ingredient::insertIngredientsInRecipe($conn, $idRecipe, $ingredient->id, $ingredient->quantity, $ingredient->id_unit);
-        }
-        foreach ($data->steps as $step) {
-            //TODO check if succeeded
-            Step::insertStepsInRecipe($conn, $idRecipe, $step->step_order, $step->text);
+		$failed = false;
+        if (insertRecipeIngredients($data, $conn, $idRecipe, $result) && insertRecipeSteps($data, $conn, $idRecipe, $result))
+		{
+			$result->state = 'success';
+			$result->message = 'Data Inserted Successfully';
         }
     } else {
-        $msg['message'] = 'Data not Inserted';
-        $msg['state'] = 'error';
+        $result->message = 'Data not Inserted';
     }
 } else {
-    $msg['state'] = 'error';
-    $msg['message'] = 'Oops! empty field detected. Please fill all the fields';
+    $result->message = 'Oops! empty field detected. Please fill all the fields';
 }
 
 //ECHO DATA IN JSON FORMAT
-echo json_encode($msg);
+echo json_encode($result);
+
+function insertRecipeIngredients($data, $conn, $idRecipe, $result) {
+	foreach ($data->ingredients as $ingredient) {
+		if (!Ingredient::insertIngredientsInRecipe($conn, $idRecipe, $ingredient->id, $ingredient->quantity, $ingredient->id_unit)){
+			$result->message = 'Data not inserted';
+			return (false);
+		}
+	}
+	return (true);
+}
+
+function insertRecipeSteps($data, $conn, $idRecipe, $result) {
+	foreach ($data->steps as $step) {
+		if (!Step::insertStepsInRecipe($conn, $idRecipe, $step->step_order, $step->text)){
+			$result->message = 'Data not inserted';
+			return (false);
+		}
+	}
+	return (true);	
+}

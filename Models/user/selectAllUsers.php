@@ -20,17 +20,14 @@ $new_user = new User($data);
 $result = new Response;
 //CREATE MESSAGE ARRAY AND SET EMPTY
 $result->state = 'error';
-if (strlen($new_user->email) > 0 && strlen($new_user->password) > 0) {
-    if (!$new_user->selectUser($conn)) {
-        $result->message = 'Invalid credentials';
-    } else {
-        $result->state = 'success';
-		$result->message = 'Login successful';
-		$result->data = array("id" => $new_user->id, "name" => $new_user->name, "firstname" => $new_user->firstname, "email" => $new_user->email, "role" => $new_user->id_role);
-    }
-    // PUSH POST DATA IN OUR $posts_array ARRAY
-} else {
-	$result->message = "Email and password can't be empty";
+
+if (($res = User::selectAllUsers($conn)) === false) {
+	$result->message = 'failed';
+}
+else {
+	$result->state = 'success';
+	$result->message = 'success';
+	$result->data = $res;
 }
 
 echo json_encode($result);

@@ -17,9 +17,9 @@ class Ingredient {
 	}
 	
 	public static function	deleteIngredientsFromRecipe($conn, $id_recipe) {
-		$delete_ingredients = "DELETE FROM ingredient WHERE ingredient_recipe.id_recipe = :id_recipe";
-		$stmt = $conn->prepare($delete_query);
-		$stmt->bindValue(':id', htmlspecialchars(strip_tags($id_recipe)), PDO::PARAM_INT);
+		$delete_ingredients = "DELETE FROM ingredient_recipe WHERE id_recipe = :id_recipe";
+		$stmt = $conn->prepare($delete_ingredients);
+		$stmt->bindValue(':id_recipe', htmlspecialchars(strip_tags($id_recipe)), PDO::PARAM_INT);
 		try {
 			return $stmt->execute();
 		}
@@ -32,8 +32,13 @@ class Ingredient {
 		$select_ingredients = "SELECT ingredient.name, ingredient_recipe.quantity, unit.text FROM ingredient INNER JOIN ingredient_recipe on ingredient.id = ingredient_recipe.id_ingredient".
 		" INNER JOIN unit on ingredient_recipe.id_unit = unit.id where ingredient_recipe.id_recipe = '$recipe_id'";
 		$stmt = $conn->prepare($select_ingredients);
-		$stmt->execute();
-		return  $stmt->fetchAll(PDO::FETCH_ASSOC);
+		try {
+			return $stmt->execute();
+			return  $stmt->fetchAll(PDO::FETCH_ASSOC);
+		}
+		catch (Exception $e) {
+			return (false);
+		}
 	}
 
 	public static function	insertIngredientsInRecipe($conn, $id_recipe, $id, $quantity, $id_unit) {
@@ -43,14 +48,24 @@ class Ingredient {
 		$stmt->bindValue(':id_ingredient', htmlspecialchars(strip_tags($id)), PDO::PARAM_INT);
 		$stmt->bindValue(':quantity', htmlspecialchars(strip_tags($quantity)), PDO::PARAM_INT);
 		$stmt->bindValue(':id_unit', htmlspecialchars(strip_tags($id_unit)), PDO::PARAM_INT);
-		return $stmt->execute();
+		try {
+			return $stmt->execute();
+		}
+		catch (Exception $e) {
+			return (false);
+		}
 	}
 
 	public static function	selectAllIngredients($conn) {
 		$select_ingredients = "SELECT * FROM ingredient ORDER BY id ASC";
 		$stmt = $conn->prepare($select_ingredients);
-		$stmt->execute();
-		return  $stmt->fetchAll(PDO::FETCH_ASSOC);
+		try {
+			return $stmt->execute();
+			return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		}
+		catch (Exception $e) {
+			return (false);
+		}
 	}
 
 	//TODO GERER LES EXCEPTIONS POUR TOUT LES $stmt->execute();

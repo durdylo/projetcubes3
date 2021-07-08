@@ -15,23 +15,27 @@ $conn = $db_connection->dbConnection();
 
 // GET DATA FORM REQUEST
 $data = json_decode(file_get_contents("php://input"));
-$new_user = new User($data);
+$user = new User($data);
 
-$result = new Response;
 //CREATE MESSAGE ARRAY AND SET EMPTY
+$result = new Response;
 $result->state = 'error';
-if (strlen($new_user->email) > 0 && strlen($new_user->password) > 0) {
-    if (!$new_user->selectUser($conn)) {
-        $result->message = 'Invalid credentials';
-    } else {
-        $result->state = 'success';
-		$result->message = 'Login successful';
-		$result->data = array("id" => $new_user->id, "name" => $new_user->name, "firstname" => $new_user->firstname, "email" => $new_user->email, "role" => $new_user->id_role);
-    }
-    // PUSH POST DATA IN OUR $posts_array ARRAY
-} else {
-	$result->message = "Email and password can't be empty";
-}
 
+// CHECK IF RECEIVED DATA FROM THE REQUEST
+if (!empty($user->id)) {
+	if ($user->selectUserById($conn)) {
+		if ($user->deleteUser($conn)) {
+			$result->state = 'success';
+			$result->message = 'Data Removed Successfully';
+		} else {
+			$result->message = 'Data not Removed';
+		}
+	} else {
+		$result->message = 'Data not Removed';
+	}
+} else {
+    $result->message = 'Please fill all the fields';
+}
+//ECHO DATA IN JSON FORMAT
 echo json_encode($result);
-// gestion error
+?>
