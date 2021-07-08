@@ -45,25 +45,60 @@ class recipeView
     }
 
 
-    public function selectData($data, $name){
+    public function selectData($data, $name, $selected = false, $valueSelected = false){
         $select = "
         <select name='$name' id=''>";
         foreach ($data as $item) {
             $id = $item['id'];
             $value = (isset($item['text']) ? $item['text'] : $item['name']);
-            $value = utf8_decode($value);
-            $select .= "<option value='$id'>$value</option>";
+            $valueH = utf8_decode($value);
+            if($selected && $value === $valueSelected){
+                $select .= "<option selected value='$id'>$valueH</option>";
+
+            }else{
+                $select .= "<option value='$id'>$valueH</option>";
+            }
         }
             $select .= "
         </select>";
         return $select;
     }
 
-    public function setHtmlAdd($units, $ingredients, $category){
-        var_dump($ingredients);
+    public function setHtmlAdd($units, $ingredients, $category, $isModif = false, $recipe = false){
+        if($isModif){
+            $this->selectData($units, 'unit_1');
+            $form = "<form id='' action='' method='post'>
+            <input type='text' value='".$recipe['name']."' name='name' id=''>
+            <label for='category'>Categorie</label>
+            ".$this->selectData($category, 'category')."
+            <input type='text' name='description' value='".$recipe['description']."'id=''>"; 
+            $form .=  "<h4>ingrdeients</h4>
+            <input type='number' value='".intval($recipe['ingredients'][0]['quantity'])."' name='qty_1' id=''>
+            ".        $this->selectData($ingredients, 'ingr_1', true, $recipe['ingredients'][0]['name'] )
+            ."".        $this->selectData($units, 'unit_1', true, $recipe['ingredients'][0]['text'] )
+            ."
+            <input type='number' value='".intval($recipe['ingredients'][1]['quantity'])."' name='qty_2' id=''>
+            ".        $this->selectData($ingredients, 'ingr_2', true, $recipe['ingredients'][1]['name'])
+            ."
+            ".        $this->selectData($units, 'unit_2', true, $recipe['ingredients'][1]['text'] )
+            ."
+            <input type='number'  value='".intval($recipe['ingredients'][2]['quantity'])."' name='qty_3' id=''>
+            ".        $this->selectData($ingredients, 'ingr_3', true, $recipe['ingredients'][2]['name'])
+            ."
+            ".        $this->selectData($units, 'unit_3', true, $recipe['ingredients'][2]['text'] )
+            ."
+                <h4>Étapes</h4>
+            <input type='text' value='".$recipe['steps'][0]['text']."'name='step_1' id=''>
+            <input type='text'  value='".$recipe['steps'][1]['text']."' name='step_2' id=''>
+            <input type='text'  value='".$recipe['steps'][2]['text']."' name='step_3' id=''>
+            <button type='submit'>Modidier</button>";
+            $form .=    "</form>";
+
+            return $form;
+        }
         $this->selectData($units, 'unit_1');
         $form = "<form id='' action='' method='post'>
-        <input type='text' name='name' id=''
+        <input type='text' name='name' id=''>
         <label for='category'>Categorie</label>
         ".$this->selectData($category, 'category')."
         <input type='text' name='description' id=''>"; 
@@ -81,7 +116,7 @@ class recipeView
         <input type='number' name='qty_3' id=''>
         ".        $this->selectData($ingredients, 'ingr_3')
         ."
-        ".        $this->selectData($units, 'unit_2')
+        ".        $this->selectData($units, 'unit_3')
         ."
             <h4>Étapes</h4>
         <input type='text' name='step_1' id=''>

@@ -28,8 +28,15 @@ class generalControler
             if ($_GET['p'] == 'cmp') {
                 if (isset($_SESSION['userId'])) {
                     $this->setMoncompte($_SESSION['userId']);
-                    if(isset($_GET['a']) && $_GET['a'] == 'addRecipe'){
-                        $this->createRecipe();
+                    if(isset($_GET['a'])){
+                        if ($_GET['a'] == 'addRecipe') {
+                            $this->createRecipe();
+
+                        }elseif($_GET['a'] == 'deleteRecipe'){
+                            $this->deleteRecipe($_GET['recetteId']);
+                        }elseif($_GET['a'] == 'modifRecipe'){
+                            $this->modifRecipe($_GET['recetteId']);
+                        }
                     }
                 } else {
                     $this->setMoncompte();
@@ -59,7 +66,6 @@ class generalControler
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
         $result = curl_exec($curl);
-
         curl_close($curl);
 
         return $result;
@@ -67,7 +73,7 @@ class generalControler
 
     private function setRecipeDetailsHtml($id) {
         $data = ['id' => $id];
-        $res = $this->callAPI('GET',"http://localhost/web/projetCubes3/Models/recipe/selectRecipe.php", $data );
+        $res = $this->callAPI('GET',"http://localhost/web/projetCubes3/Models/recipe/selectRecipe.php", $data);
         $view = new recipeView;
         $res = json_decode($res, true);
         if(isset($_SESSION['userId'])){
@@ -78,7 +84,6 @@ class generalControler
             $isConected = false;
             $userId = false;
         }
-
         $this->html =  $this->setHead() . $this->setHeader($isConected, $userId) .  $view->setHtmlDetails($res) . $this->setFooter();
     }
     private function setHead()
@@ -161,22 +166,22 @@ class generalControler
     }
     private function createRecipe(){
         if(isset($_POST['name'])){
-            $objRecipe = new Recipe([]);
             $ingredientsPost = [];
             $stepsPost = [];
             foreach ($_POST as $key => $item) {
                 $tmp = explode('_', $key);
                 if ($tmp[0] === 'ingr') {
-                    array_push($ingredientsPost, ['id' => $item, 'quantity' => 'qty_'.$tmp[1], 'id_unit'=> 'unit_'.$tmp[1]]);
+                    array_push($ingredientsPost, ['id' => $item, 'quantity' => $_POST['qty_'.$tmp[1]], 'id_unit'=> $_POST['unit_'.$tmp[1]]]);
                 } elseif ($tmp[0] === 'step') {
                     array_push($stepsPost, ['step_order' => $tmp[1], 'text' => $item]);
+                    
                 }
             }
-            $arrayOpts = ['name' => $_POST['name'], 'description' => $_POST['category'], 'id_user' => $_SESSION['userId']];
-            array_push($arrayOpts, $ingredientsPost);
-            array_push($arrayOpts, $stepsPost);
-            
-
+            $arrayOpts = ['name' => $_POST['name'], 'id_category' => $_POST['category'], 'id_user' => $_SESSION['userId'], 'description' => $_POST['description']];
+            $arrayOpts['ingredients'] = $ingredientsPost;
+            $arrayOpts['steps'] = $stepsPost;
+            // var_dump(json_encode($arrayOpts));
+            $this->callAPI('POST', 'http://localhost/web/projetCubes3/Models/recipe/insertRecipe.php', $arrayOpts);
         }
         $unitObj = new Unit([]);
         $units = $unitObj->selectAllUnits($this->conn);
@@ -186,5 +191,43 @@ class generalControler
         $categories = $categoriesObj->selectAllCategories($this->conn);
         $view = new recipeView;
         $this->html = $this->setHead() . $this->setHeader() . $view->setHtmlAdd($units, $ingredients, $categories) . $this->setFooter();
+    }
+    private function deleteRecipe($idRecipe){
+        $this->callAPI('POST', 'http://localhost/web/projetCubes3/Models/recipe/deleteRecipe.php', ['id' => $idRecipe]);
+
+    }
+    private function modifRecipe($idRecipe){
+        if(isset($_POST['name'])){
+            $ingredientsPost = [];
+            $stepsPost = [];
+            foreach ($_POST as $key => $item) {
+                $tmp = explode('_', $key);
+                if ($tmp[0] === 'ingr') {
+                    array_push($ingredientsPost, ['id' => $item, 'quantity' => $_POST['qty_'.$tmp[1]], 'id_unit'=> $_POST['unit_'.$tmp[1]]]);
+                } elseif ($tmp[0] === 'step') {
+                    array_push($stepsPost, ['step_order' => $tmp[1], 'text' => $item]);
+                    
+                }
+            }
+            $arrayOpts = ['name' => $_POST['name'], 'id_category' => $_POST['category'], 'id_user' => $_SESSION['userId'], 'description' => $_POST['description']];
+            $arrayOpts['ingredients'] = $ingredientsPost;
+            $arrayOpts['steps'] = $stepsPost;
+            $arrayOpts['id'] = $idRecipe;
+            // var_dump(json_encode($arrayOpts));
+            $res = $this->callAPI('GET', 'http://localhost/web/projetCubes3/Models/recipe/updateRecipe.php', $arrayOpts);
+            var_dump($res);
+        }
+        $unitObj = new Unit([]);
+        $units = $unitObj->selectAllUnits($this->conn);
+        $ingredientsObj = new Ingredient([]);
+        $ingredients = $ingredientsObj->selectAllIngredients($this->conn);
+        $categoriesObj = new Category([]);
+        $categories = $categoriesObj->selectAllCategories($this->conn);
+        $data = ['id' => $idRecipe];
+        $res = $this->callAPI('GET',"http://localhost/web/projetCubes3/Models/recipe/selectRecipe.php", $data );
+        $view = new recipeView;
+        $res = json_decode($res, true);
+        var_dump($res);
+        $this->html = $this->setHead() . $this->setHeader() . $view->setHtmlAdd($units, $ingredients, $categories, true, $res['data'] ) . $this->setFooter();
     }
 }
