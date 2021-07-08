@@ -64,7 +64,12 @@ class Recipe {
         $insert_stmt->bindValue(':description', htmlspecialchars(strip_tags($this->description)), PDO::PARAM_STR);
         $insert_stmt->bindValue(':id_user', htmlspecialchars(strip_tags($this->id_user)), PDO::PARAM_INT);
         $insert_stmt->bindValue(':id_category', htmlspecialchars(strip_tags($this->id_category)), PDO::PARAM_INT);
-		return $insert_stmt->execute();
+		try {
+			return $insert_stmt->execute();
+		}
+		catch (Exception $e) {
+			return (false);
+		}
 	}
 
 	public function	updateRecipe($conn) {

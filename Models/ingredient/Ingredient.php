@@ -60,7 +60,7 @@ class Ingredient {
 		$select_ingredients = "SELECT * FROM ingredient ORDER BY id ASC";
 		$stmt = $conn->prepare($select_ingredients);
 		try {
-			return $stmt->execute();
+			$stmt->execute();
 			return $stmt->fetchAll(PDO::FETCH_ASSOC);
 		}
 		catch (Exception $e) {

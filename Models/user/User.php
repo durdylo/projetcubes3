@@ -43,13 +43,12 @@ class User
 	{
 		$select_query = "SELECT * FROM `user` WHERE is_deleted='0';";
 		$stmt = $conn->prepare($select_query);
-		$stmt->execute();
-		$res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		
-		if ($res === false) {
+		try {
+			$stmt->execute();
+			return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		}
+		catch (Exception $e) {
 			return (false);
-		} else {
-			return $res;
 		}
 	}
 	
@@ -57,12 +56,17 @@ class User
 	{
 		$select_query = "SELECT * FROM `user` WHERE id='$this->id' AND is_deleted='0';";
 		$stmt = $conn->prepare($select_query);
-		$stmt->execute();
-		$res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		if ($res == 0 || count($res) == 0) {
+		try {
+			$stmt->execute();
+			$res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			if ($res == 0 || count($res) == 0) {
+				return (false);
+			} else {
+				$this->set($res[0]);
+			}
+		}
+		catch (Exception $e) {
 			return (false);
-		} else {
-			$this->set($res[0]);
 		}
 		return (true);
 	}
