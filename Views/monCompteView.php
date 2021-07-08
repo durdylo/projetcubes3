@@ -38,16 +38,32 @@ class monCompteView
     </div>";
     }
 
-    public function setHTLMonCompte($user, $ingredients, $recettes, $unites)
+    public function setHTLMonCompte($user,  $recipes, $unites)
     {
         var_dump($user);
+
+        $html = "<h2 class='body-title'>Mon Compte</h2>";
+        $html .= "<nav><a href='index.php?p=cmp&sp=recipes'>Créer une recette</a></nav>";
+        foreach ($recipes as $recipe) {
+            $html .=  "
+            <div>
+            <a href='index.php?p=cmp&modif=1&recetteId=".$recipe['id']."'><figure><img src='assets/images/93607de4-f877-4c0f-9683-5bc0c65dee55-recettes-plats-au-four-tout-en-un-one-sheet-pan-768x512.png' class='corsica'><figcaption>".$recipe['name']."</figcaption></figure>
+            <h3>".$recipe['name_category']."</h3>
+        </a>  
+        </div> ";
+        }
+        return $html;
+
+       
+    }
+
+    public function setCreateRecipe($ingredients){
         $ingredientsHTML = '';
         foreach ($ingredients as $ingredient) {
             $ingredientsHTML .= "<option value='".$ingredient['name']."'>".$ingredient['name']."</option>";
         }
         return "   <div class='body-block ajout_ingredients'>
-        <h2 class='body-title'>Mon Compte</h2>
-        <h2 class=''>".$user['']."</h2>
+        <h2 class=''></h2>
         
         <select class='selectIngredients'>
         $ingredientsHTML
