@@ -25,7 +25,7 @@ class accueilView
         foreach ($recipes as $recipe) {
             $main .=  "
             <div>
-            <a href='index.php?p=details&recetteId=".$recipe['id']."'><figure><img src='assets/images/93607de4-f877-4c0f-9683-5bc0c65dee55-recettes-plats-au-four-tout-en-un-one-sheet-pan-768x512.png' class='corsica'><figcaption>".$recipe['name']."</figcaption></figure>
+            <a class='cardRecipe' href='index.php?p=details&recetteId=".$recipe['id']."'><figure><img src='assets/images/93607de4-f877-4c0f-9683-5bc0c65dee55-recettes-plats-au-four-tout-en-un-one-sheet-pan-768x512.png' class='corsica'><figcaption>".$recipe['name']."</figcaption></figure>
             <h3>".utf8_decode($recipe['name_category'])."</h3>
         </a>  
         </div> ";
