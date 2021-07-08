@@ -83,11 +83,46 @@ class Step {
 		}
 	}
 
+	public static function		updateStepInRecipe($conn, $recipe, $step) {
+		$update_query = "UPDATE step SET text= :text WHERE id_recipe= :id_recipe AND step_order= :step_order;";
+		$update_query = "INSERT INTO step (text, id_recipe, step_order) VALUES(:text, :id_recipe, :step_order) ON DUPLICATE KEY UPDATE text=:text";
+
+		$stmt = $conn->prepare($update_query);
+		$stmt->bindValue(':text', htmlspecialchars(strip_tags($step->text)), PDO::PARAM_STR);
+		$stmt->bindValue(':id_recipe', htmlspecialchars(strip_tags($recipe->id)), PDO::PARAM_INT);
+		$stmt->bindValue(':step_order', htmlspecialchars(strip_tags($step->step_order)), PDO::PARAM_INT);
+		try {
+			return $stmt->execute();
+		}
+		catch (Exception $e) {
+			return (false);
+		}
+	}
+
 	public function			deleteStep($conn) {
 	
 		$delete_query = "DELETE FROM step WHERE id= :id";
 		$stmt = $conn->prepare($delete_query);
 		$stmt->bindValue(':id', htmlspecialchars(strip_tags($this->id)), PDO::PARAM_INT);
+		try {
+			return $stmt->execute();
+		}
+		catch (Exception $e) {
+			return (false);
+		}
+	}
+	
+	public static function		deleteStepsInRecipe($conn, $recipe, $not_to_delete) {
+		$placeHolders = implode(', ', array_fill(0, count($not_to_delete), '?'));
+		if (count($not_to_delete) > 0)
+			$delete_query = "DELETE FROM step WHERE id_recipe= ? AND step_order NOT IN ($placeHolders);";
+		else
+			$delete_query = "DELETE FROM step WHERE id_recipe= ?;";
+		$stmt = $conn->prepare($delete_query);
+		$stmt->bindValue(1, htmlspecialchars(strip_tags($recipe->id)), PDO::PARAM_INT);
+		foreach ($not_to_delete as $index => $value) {
+			$stmt->bindValue($index + 2, $value, PDO::PARAM_INT);
+		}
 		try {
 			return $stmt->execute();
 		}

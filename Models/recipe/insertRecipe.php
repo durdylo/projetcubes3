@@ -12,7 +12,7 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 // INCLUDING DATABASE AND MAKING OBJECT
-require '../../database.php';
+require_once('../../database.php');
 $db_connection = new Database();
 $conn = $db_connection->dbConnection();
 
@@ -24,7 +24,7 @@ $result = new Response;
 $result->state = 'error';
 
 // CHECK DATA VALUE IS EMPTY OR NOT
-if (!empty($data->name) && !empty($data->description) && !empty($data->id_user) && isset($data->id_category) && !empty($data->ingredients) && !empty($data->steps)) {
+if (!empty($data->name) && !empty($data->description) && !empty($data->id_user) && isset($data->id_category) && isset($data->ingredients) && isset($data->steps)) {
 
     if ($new_recipe->insertRecipe($conn)) {
 
