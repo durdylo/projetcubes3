@@ -95,11 +95,47 @@ class Ingredient {
 		}
 	}
 
+	public static function	updateIngredientInRecipe($conn, $recipe, $ingredient_recipe) {
+		$update_query = "INSERT INTO ingredient_recipe (id_ingredient, id_recipe, quantity, id_unit) VALUES(:id_ingredient, :id_recipe, :quantity, :id_unit) ON DUPLICATE KEY UPDATE quantity=:quantity, id_unit=:id_unit;";
+
+		$stmt = $conn->prepare($update_query);
+		$stmt->bindValue(':quantity', htmlspecialchars(strip_tags($ingredient_recipe->quantity)), PDO::PARAM_INT);
+		$stmt->bindValue(':id_unit', htmlspecialchars(strip_tags($ingredient_recipe->id_unit)), PDO::PARAM_INT);
+		$stmt->bindValue(':id_ingredient', htmlspecialchars(strip_tags($ingredient_recipe->id)), PDO::PARAM_INT);
+		$stmt->bindValue(':id_recipe', htmlspecialchars(strip_tags($recipe->id)), PDO::PARAM_INT);
+		try {
+			return $stmt->execute();
+		}
+		catch (Exception $e) {
+			return (false);
+		}
+	}
+
 	public function			deleteIngredient($conn) {
 	
 		$delete_query = "DELETE FROM ingredient WHERE id= :id";
 		$stmt = $conn->prepare($delete_query);
 		$stmt->bindValue(':id', htmlspecialchars(strip_tags($this->id)), PDO::PARAM_INT);
+		try {
+			return $stmt->execute();
+		}
+		catch (Exception $e) {
+			return (false);
+		}
+	}
+
+	public static function		deleteIngredientInRecipe($conn, $recipe, $not_to_delete) {
+		$placeHolders = implode(', ', array_fill(0, count($not_to_delete), '?'));
+		if (count($not_to_delete) > 0)
+			$delete_query = "DELETE FROM ingredient_recipe WHERE id_recipe= ? AND id_ingredient NOT IN ($placeHolders)";
+		else
+			$delete_query = "DELETE FROM ingredient_recipe WHERE id_recipe= ?";
+
+		$stmt = $conn->prepare($delete_query);
+		$stmt->bindValue(1, htmlspecialchars(strip_tags($recipe->id)), PDO::PARAM_INT);
+		foreach ($not_to_delete as $index => $value) {
+			$stmt->bindValue($index + 2, $value, PDO::PARAM_INT);
+		}
 		try {
 			return $stmt->execute();
 		}

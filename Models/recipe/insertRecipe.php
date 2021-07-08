@@ -24,7 +24,7 @@ $result = new Response;
 $result->state = 'error';
 
 // CHECK DATA VALUE IS EMPTY OR NOT
-if (!empty($data->name) && !empty($data->description) && !empty($data->id_user) && isset($data->id_category) && !empty($data->ingredients) && !empty($data->steps)) {
+if (!empty($data->name) && !empty($data->description) && !empty($data->id_user) && isset($data->id_category) && isset($data->ingredients) && isset($data->steps)) {
 
     if ($new_recipe->insertRecipe($conn)) {
 
