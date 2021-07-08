@@ -24,7 +24,7 @@ $result->state = 'error';
 
 if (!empty($data->id_user)) {
     if (($res =  $recipe->selectUserRecipes($conn)) === false){
-		$result->message = 'select failed';
+		$result->message = 'user recipe select failed';
 	}
 	else {
 		$result->state = 'success';
@@ -36,11 +36,11 @@ if (!empty($data->id_user)) {
 } elseif (!empty($data->id)) {
     // TODO verif si tout c'est bien passé
    if ($recipe->selectRecipe($conn) === false) {
-		$result->message = 'select failed';
+		$result->message = 'recipe select failed';
    }
    else if  (($ingredientsRes =  Ingredient::selectIngredientsFromRecipe($conn, $recipe->id) === false) ||
-  		 !($stepsRes = Step::selectStepsFromRecipe($conn, $recipe->id))) {
-			$result->message = 'select failed';
+  		 ($stepsRes = Step::selectStepsFromRecipe($conn, $recipe->id)) === false) {
+			$result->message = 'details select failed';
 	}
 	else {
 		$result->state = 'success';
