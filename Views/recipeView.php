@@ -14,4 +14,8 @@ class recipeView
         $recipe = "<div><h2></h2></div>";
         return $recipe;
     }
+
+    public function setHtmlModif($recipe){
+        
+    }
 }

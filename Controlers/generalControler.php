@@ -124,7 +124,9 @@ class generalControler
             $user->selectUserById($this->conn);
             $ingredientObj = new Ingredient([]);
             $ingredients = $ingredientObj->selectAllIngredients($this->conn);
-            $this->html = $this->setHead() . $this->setHeader() . $view->setHTLMonCompte($user, $ingredients, false, false). $this->setFooter(); 
+            $recipes = new Recipe(['id_user' => $user->id]);
+            $recipesUser = $recipes->selectUserRecipes($this->conn);
+            $this->html = $this->setHead() . $this->setHeader() . $view->setHTLMonCompte($user, $recipesUser, false). $this->setFooter(); 
         }
     }
     private function setInscription($userId = false)
