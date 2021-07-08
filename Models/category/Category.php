@@ -1,8 +1,8 @@
 <?php
-class Unit
+class Category
 {
 	public	$id;
-	public	$text;
+	public	$name;
 
 	public function __construct($data)
 	{
@@ -17,8 +17,8 @@ class Unit
 			$this->{$key} = $value;
 	}
 
-	public function		selectUnit($conn) {
-		$select_query = "SELECT * FROM unit WHERE id = :id";
+	public function		selectCategory($conn) {
+		$select_query = "SELECT * FROM category WHERE id = :id";
 		$stmt = $conn->prepare($select_query);
 		$stmt->bindValue(':id', htmlspecialchars(strip_tags($this->id)), PDO::PARAM_INT);
 		try {			
@@ -36,8 +36,8 @@ class Unit
 		return (true);
 	}
 
-	public function		selectAllUnits($conn) {
-		$select_query = "SELECT * FROM unit";
+	public function		selectAllCategories($conn) {
+		$select_query = "SELECT * FROM category";
 		$stmt = $conn->prepare($select_query);
 		try {
 			$stmt->execute();
@@ -48,11 +48,11 @@ class Unit
 		}
 	}
 
-	public function			insertUnit($conn) {
-		$insert_query = "INSERT INTO `unit`(text) VALUES(:text)";
+	public function			insertCategory($conn) {
+		$insert_query = "INSERT INTO `category`(name) VALUES(:name)";
 		$insert_stmt = $conn->prepare($insert_query);
 		// DATA BINDING
-		$insert_stmt->bindValue(':text', htmlspecialchars(strip_tags($this->text)), PDO::PARAM_STR);
+		$insert_stmt->bindValue(':name', htmlspecialchars(strip_tags($this->name)), PDO::PARAM_STR);
 		try {
 			return $insert_stmt->execute();
 		}
@@ -62,10 +62,10 @@ class Unit
 	}
 
 	
-	public function			updateUnit($conn) {
-		$update_query = "UPDATE unit SET text = :text WHERE id = :id;";
+	public function			updateCategory($conn) {
+		$update_query = "UPDATE category SET name = :name WHERE id = :id;";
 		$stmt = $conn->prepare($update_query);
-		$stmt->bindValue(':text', htmlspecialchars(strip_tags($this->text)), PDO::PARAM_STR);
+		$stmt->bindValue(':name', htmlspecialchars(strip_tags($this->name)), PDO::PARAM_STR);
 		$stmt->bindValue(':id', htmlspecialchars(strip_tags($this->id)), PDO::PARAM_INT);
 		try {
 			return $stmt->execute();
