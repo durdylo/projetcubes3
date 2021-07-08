@@ -232,3 +232,19 @@
     text-decoration: none;
     color: black;
   }
+  #recettes{ /** container de toutes les recettes */
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+  #recettes div{/** container de une recette qui sera pour toutes les recettes */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 33%;
+  }
+
+  #recettes div img{/** style de toutes les images de recettes */
+    max-width: 90%;
+  }

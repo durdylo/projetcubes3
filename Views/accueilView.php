@@ -20,18 +20,14 @@ class accueilView
     
         <p class='e7_5'>Les tendances du moment</p>
     
-            <div class='top-recettes'>
-                <div class='avocat'></div>
-                <div class='gratin'></div>
-                <div class='poelee'></div>
-            </div>
-        
-    
-            <div class='bottom-recettes'>
-                <div class='corsica'></div>
-                <div class='lasagnes'></div>
-                <div class='tagliatelles'></div>
-            </div>      
+        <main id='recettes'>
+
+        <div>
+        <a href='#'><figure><img src='assets/images/93607de4-f877-4c0f-9683-5bc0c65dee55-recettes-plats-au-four-tout-en-un-one-sheet-pan-768x512.png' class='corsica'><figcaption>Corsica Fellucia</figcaption></figure>
+        <h3>Titre Recette</h3>
+    </a>  
+    </div> 
+    </main> 
     
     
         <script type='text/javascript' src='Script.js'></script>

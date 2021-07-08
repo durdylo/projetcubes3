@@ -37,4 +37,23 @@ class monCompteView
         <a class='connexion-link' href='index.php?p=cmp'>Déjà membre ? Connectez-vous</a>
     </div>";
     }
+
+    public function setHTLMonCompte($user, $ingredients, $recettes, $unites)
+    {
+
+        var_dump($ingredients);
+        $ingredientsHTML = '';
+        foreach ($ingredients as $ingredient) {
+            $ingredientsHTML .= "<option value='".$ingredient['name']."'>".$ingredient['name']."</option>";
+        }
+        return "   <div class='body-block ajout_ingredients'>
+        <h2 class='body-title'>Mon Compte</h2>
+        <h2 class=''>".$user['']."</h2>
+        
+        <select class='selectIngredients'>
+        $ingredientsHTML
+</select>
+<button id='add'>+</button>
+    </div>";
+    }
 }

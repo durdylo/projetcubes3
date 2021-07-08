@@ -16,12 +16,16 @@ class generalView
         <link rel='stylesheet' type='text/css' href='assets/css/accueil.css'>
         <link rel='stylesheet' type='text/css' href='assets/css/compte.css'>
         <link rel='stylesheet' type='text/css' href='assets/css/inscription.css'>
+        <script type='text/javascript' src='assets/js/script.js'></script>
+
             </head>";
     }
 
     public function setHTMLFooter()
     {
-        return "    <div class='e8_1'>
+        return "
+
+        <div class='e8_1'>
         <img class='logo2' src='assets/images/Rectangle2.png' alt='Logo' width='200' height='200'>
         <p  class='e8_26'>JLCuisine</p>
         <p class='v8_23'>Copyrights © 2021 - Mentions légales - Politique de confidentialité - CGU - Créé par Webcom</p>

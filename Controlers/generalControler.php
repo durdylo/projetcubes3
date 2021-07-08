@@ -2,6 +2,7 @@
 include_once('Views/allViews.php');
 include_once('Models/user/User.php');
 include_once('Models/recipe/Recipe.php');
+include_once('Models/ingredient/Ingredient.php');
 include_once('database.php');
 class generalControler
 {
@@ -85,9 +86,11 @@ class generalControler
         }
         if ($userId == false) {
 
-            $this->html = $this->setHead() . $this->setHeader() . $view->setHTMLConnexion() . $this->setFooter();
+            $this->html = $this->setHead() . $this->setHeader() . $view->setHTMLConnexion() . $this->setFooter(); 
         } else {
-            $this->html =  'Mon compte';
+            $ingredientObj = new Ingredient([]);
+            $ingredients = $ingredientObj->selectAllIngredients($this->conn);
+            $this->html = $this->setHead() . $this->setHeader() . $view->setHTLMonCompte(false, $ingredients, false, false). $this->setFooter(); 
         }
     }
     private function setInscription($userId = false)
