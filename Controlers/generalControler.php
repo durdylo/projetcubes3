@@ -31,10 +31,42 @@ class generalControler
                 }
             } elseif ($_GET['p'] == 'inscr') {
                 $this->setInscription();
+            }elseif($_GET['p'] == 'details'){
+                $this->setRecipeDetailsHtml($_GET['recetteId']);
             }
         } else {
             $this->setAccueil();
         }
+    }
+    private function callAPI($method, $url, $data = false)
+    {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+
+
+        if ($data) {
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+        }
+
+
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+        $result = curl_exec($curl);
+
+        curl_close($curl);
+
+        return $result;
+    }
+
+    private function setRecipeDetailsHtml($id) {
+        $data = ['id' => $id];
+        $res = $this->callAPI('GET',"http://localhost/web/projetCubes3/Models/recipe/selectRecipe.php", $data );
+        $view = new recipeView;
+        $res = json_decode($res, true);
+        $view->setHtmlDetails($res);
+
     }
     private function setHead()
     {
@@ -88,9 +120,11 @@ class generalControler
 
             $this->html = $this->setHead() . $this->setHeader() . $view->setHTMLConnexion() . $this->setFooter(); 
         } else {
+            $user = new User(['id' => $_SESSION['userId']]);
+            $user->selectUserById($this->conn);
             $ingredientObj = new Ingredient([]);
             $ingredients = $ingredientObj->selectAllIngredients($this->conn);
-            $this->html = $this->setHead() . $this->setHeader() . $view->setHTLMonCompte(false, $ingredients, false, false). $this->setFooter(); 
+            $this->html = $this->setHead() . $this->setHeader() . $view->setHTLMonCompte($user, $ingredients, false, false). $this->setFooter(); 
         }
     }
     private function setInscription($userId = false)

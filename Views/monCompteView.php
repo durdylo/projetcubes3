@@ -40,8 +40,7 @@ class monCompteView
 
     public function setHTLMonCompte($user, $ingredients, $recettes, $unites)
     {
-
-        var_dump($ingredients);
+        var_dump($user);
         $ingredientsHTML = '';
         foreach ($ingredients as $ingredient) {
             $ingredientsHTML .= "<option value='".$ingredient['name']."'>".$ingredient['name']."</option>";
