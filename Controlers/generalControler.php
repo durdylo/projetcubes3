@@ -44,11 +44,26 @@ class generalControler
             } elseif ($_GET['p'] == 'inscr') {
                 $this->setInscription();
             }elseif($_GET['p'] == 'details'){
+                if(isset($_GET['a']) && $_GET['a'] == 'pdf'){
+                    $this->dwnlpdf($_GET['recetteId']);
+                }
                 $this->setRecipeDetailsHtml($_GET['recetteId']);
+
             }
         } else {
             $this->setAccueil();
         }
+    }
+    private function dwnlpdf($id){
+        $data = ['id' => $id];
+        $res = $this->callAPI('GET',"http://localhost/web/projetCubes3/Models/recipe/selectRecipe.php", $data);
+        $view = new recipeView;
+        $res = json_decode($res, true);
+        $pdf = new FPDF();
+        $pdf->AddPage();
+        $pdf->SetFont('Arial','B',16);
+        $pdf->Cell(40,10,htmlspecialchars_decode($view->setHtmlDetails($res, $id, true)));
+        $pdf->Output();
     }
     private function callAPI($method, $url, $data = false)
     {
@@ -84,7 +99,7 @@ class generalControler
             $isConected = false;
             $userId = false;
         }
-        $this->html =  $this->setHead() . $this->setHeader($isConected, $userId) .  $view->setHtmlDetails($res) . $this->setFooter();
+        $this->html =  $this->setHead() . $this->setHeader($isConected, $userId) .  $view->setHtmlDetails($res, $id) . $this->setFooter();
     }
     private function setHead()
     {

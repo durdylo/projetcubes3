@@ -32,7 +32,7 @@ class generalView
 
         <p class='v8_23'>Copyrights © 2021 - <a href='#'>Mentions légales</a> - <a href='#'>Politique de
                 confidentialité</a> - CGU - Créé par <a href='#'>Webcom</a></p>
-        <a href='index.php'><img class='logo2' src='./assets/images/Rectangle2.png' alt='Logo' width='100' height='100'></a>
+       <img class='logo2' src='./assets/images/Rectangle2.png' alt='Logo' width='100' height='100'>
 
     </div>";
     }
@@ -48,7 +48,7 @@ $link        </div>
 
     <div class='v1'>
         <span class='e4_2'>JLCuisine</span>
-        <img class='logo1' src='./assets/images/Rectangle2.png' alt='Logo' width='200' height='200'>
+        <a href='index.php'> <img class='logo1' src='./assets/images/Rectangle2.png' alt='Logo' width='200' height='200'></a>
         <span class='e4_5'>Inspirez-vous des plus créatifs !</span>
     </div>";
     }
